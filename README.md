@@ -1,2 +1,2 @@
 # Antimatter Dimensions - Aarex's Modifications
-This is my modification of Antimatter Dimensions. Some mods are ported to this mod, like NG--.
+This site is just Antimatter Dimensions, but contains a lot of interesting mods, like NG+3. Many mods are ported into this site: NG++, NG--, NG+3C, and few more!

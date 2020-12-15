@@ -38,7 +38,7 @@ function buyWithEP() {
 }
 
 function canBuyTTWithEP() {
-	return player.timeDimension1.bought || (player.masterystudies !== undefined && tmp.qu.bigRip.active)
+	return player.timeDimension1.bought || inBigRip()
 }
 
 function maxTheorems() {
@@ -100,37 +100,21 @@ function updateTheoremButtons() {
 	document.getElementById("timetheorems").innerHTML = html
 }
 
-function buyTimeStudy(name, check, quickBuy) {
+function buyTimeStudy(name, quickBuy) {
 	if (inQCModifier("sm")) return
-	var cost = studyCosts[all.indexOf(name)]
+	var cost = studyCosts[name]
 	if (player.boughtDims) {
 		if (player.timestudy.theorem < player.timestudy.ers_studies[name] + 1) return
 		player.timestudy.theorem -= player.timestudy.ers_studies[name]+1
 		player.timestudy.ers_studies[name]++
 		updateTimeStudyButtons(true)
-	} else if (shiftDown && check === undefined) studiesUntil(name);
-	else if (player.timestudy.theorem >= cost && canBuyStudy(name) && !player.timestudy.studies.includes(name)) {
+		return
+	}
+	if (shiftDown && !quickBuy) studiesUntil(name);
+	if (player.timestudy.theorem >= cost && canBuyStudy(name) && !player.timestudy.studies.includes(name)) {
 		player.timestudy.studies.push(name)
 		player.timestudy.theorem -= cost
-		if (name == 71 || name == 81 || name == 91 || name == 101) {
-			document.getElementById(name).className = "timestudybought normaldimstudy"
-		} else if (name == 72 || name == 82 || name == 92 || name == 102) {
-			document.getElementById(name).className = "timestudybought infdimstudy"
-		} else if (name == 73 || name == 83 || name == 93 || name == 103) {
-			document.getElementById(name).className = "timestudybought timedimstudy"
-		} else if (name == 121 || name == 131 || name == 141) {
-			document.getElementById(name).className = "timestudybought activestudy"
-		} else if (name == 122 || name == 132 || name == 142) {
-			document.getElementById(name).className = "timestudybought passivestudy"
-		} else if (name == 123 || name == 133 || name == 143) {
-			document.getElementById(name).className = "timestudybought idlestudy"
-		} else if (name == 221 || name == 224 || name == 225 || name == 228 || name == 231 || name == 234) {
-			document.getElementById(name).className = "timestudybought darkstudy"
-		} else if (name == 222 || name == 223 || name == 226 || name == 227 || name == 232 || name == 233) {
-			document.getElementById(name).className = "timestudybought lightstudy"
-		} else {
-			document.getElementById(name).className = "timestudybought"
-		}
+		updateBoughtTimeStudy(name)
 		if (name == 131 && speedrunMilestonesReached < 20) {
 			if (player.replicanti.galaxybuyer) document.getElementById("replicantiresettoggle").textContent = "Auto galaxy ON (disabled)"
 			else document.getElementById("replicantiresettoggle").textContent = "Auto galaxy OFF (disabled)"
@@ -139,10 +123,6 @@ function buyTimeStudy(name, check, quickBuy) {
 		updateTimeStudyButtons(true)
 		drawStudyTree()
 	}
-}
-
-function getDilationTotalTTReq() {
-	return tmp.ngex ? 12950 : 13000
 }
 
 function buyDilationStudy(name, cost) {
@@ -167,35 +147,106 @@ function buyDilationStudy(name, cost) {
 }
 
 function hasRow(row) {
-	for (var i=0; i<player.timestudy.studies.length; i++) {
+	for (let i = 0; i < player.timestudy.studies.length; i++) {
 		if (Math.floor(player.timestudy.studies[i]/10) == row) return true
 	}
+	return false
+}
+
+function hasTS(num){
+	return hasTimeStudy(num)
 }
 
 function canBuyStudy(name) {
-	var row = Math.floor(name / 10)
-	var col = name % 10
-	if (name == 33) {
-		return player.timestudy.studies.includes(21) 
-	}
+	let row = Math.floor(name / 10)
+	let col = name % 10
+	let total = getTotalTT(player)
+	let totalChalls = tmp.ec
+
+	if (name == 33) return player.timestudy.studies.includes(21) 
+	
 	if (name == 62) {
-		return player.eternityChalls.eterc5 !== undefined && player.timestudy.studies.includes(42)
+		return player.eternityChalls.eterc5 !== undefined && hasTS(42)
 	}
+	if ((name == 71 || name == 72) && player.eternityChallUnlocked == 12) return false;
 
-	if ((name == 71 || name == 72) && player.eternityChallUnlocked == 12) {
-		return false;
-	}
-
-	if ((name == 72 || name == 73) && player.eternityChallUnlocked == 11) {
-		return false;
-	}
+	if ((name == 72 || name == 73) && player.eternityChallUnlocked == 11) return false;
 
 	if (name == 181) {
 		return player.eternityChalls.eterc1 !== undefined && player.eternityChalls.eterc2 !== undefined && player.eternityChalls.eterc3 !== undefined && player.timestudy.studies.includes(171)
 	}
-	if (name == 201) return player.timestudy.studies.includes(192) && !player.dilation.upgrades.includes(8)
-	if (name == 211 || name == 212) return player.timestudy.studies.includes(191)
-	if (name == 213 || name == 214) return player.timestudy.studies.includes(193)
+	if (name == 201) return hasTS(192) && !player.dilation.upgrades.includes(8)
+	if (name == 211 || name == 212) return hasTS(191)
+	if (name == 213 || name == 214) return hasTS(193)
+
+	if (ngcStudies.includes(name)) {
+		if (!tmp.ngC) return false
+		switch(name) {
+			case 12: 
+				return hasTS(11)
+				break;
+			case 23:
+				return hasTS(21)
+				break; 
+			case 24: 
+			case 34:
+				return hasTS(22)
+				break; 
+			case 25: 
+				return hasTS(13)
+				break; 
+			case 35: 
+				return hasTS(34) && (player.infinityPoints.plus(1).log10() >= 9000 || player.eternityUpgrades.includes(11))
+				break;
+			case 43: 
+				return hasTS(33)
+				break;
+			case 44: 
+				return hasTS(34)
+				break;
+			case 52: 
+				return hasTS(41)
+				break;
+			case 63:
+				return hasTS(52) || hasTS(61)
+				break;
+			case 112:
+				return total >= 250 && hasTS(111)
+				break;
+			case 113:
+				return total >= 1800 && hasTS(112)
+				break; 
+			case 152:
+				return totalChalls >= 20 && hasTS(141)
+				break;
+			case 172:
+				return totalChalls >= 10 && hasTS(161)
+				break;
+			case 173:
+				return totalChalls >= 20 && hasTS(162)
+				break; 
+			case 194:
+				return hasTS(191)
+				break;
+			case 195:
+			case 196:
+			case 197:
+				return hasTS(name - 2)
+				break;
+			case 202:
+			case 203:
+				return hasTS(name - 8)
+				break;
+
+		}
+	}
+
+	if (tmp.ngC) {
+		if (name == 61 && total < 18) return false
+		if (name == 151 && total < 195) return false
+		if (name == 171 && total < 200) return false
+	}
+
 	switch(row) {
 
 		case 1: return true
@@ -220,12 +271,13 @@ function canBuyStudy(name) {
 			if (player.timestudy.studies.includes((row-1)*10 + col)) return true; else return false
 			break;
 		case 12:
-			if (hasRow(row-1) && (!hasRow(row) || (player.masterystudies ? player.masterystudies.includes("t272") : false))) return true; else return false
+			if (hasRow(row-1) && (!hasRow(row) || (player.eternityUpgrades.includes(10) && tmp.ngC) || (player.masterystudies ? player.masterystudies.includes("t272") : false))) return true; else return false
 			break;
 		case 7:
 			if (!player.timestudy.studies.includes(61)) return false;
 			if (player.dilation.upgrades.includes(8)) return true;
-			var have = player.timestudy.studies.filter(function(x) {return Math.floor(x / 10) == 7}).length;
+			if (player.eternityUpgrades.includes(10) && tmp.ngC) return true;
+			let have = player.timestudy.studies.filter(function(x) {return Math.floor(x / 10) == 7}).length;
 			if (player.timestudy.studies.includes(201)) return have < 2;
 			return have < 1;
 			break;
@@ -235,17 +287,75 @@ function canBuyStudy(name) {
 			break;
 
 		case 22:
-			return player.timestudy.studies.includes(210 + Math.round(col/2)) && (((name%2 == 0) ? !player.timestudy.studies.includes(name-1) : !player.timestudy.studies.includes(name+1)) || (player.masterystudies ? player.masterystudies.includes("t302") : false))
+			if (tmp.ngC && total < 4500) return false;
+			return player.timestudy.studies.includes(210 + Math.round(col/2)) && (((name % 2 == 0) ? !player.timestudy.studies.includes(name-1) : !player.timestudy.studies.includes(name+1)) || (player.eternityUpgrades.includes(11) && tmp.ngC) || (player.masterystudies ? player.masterystudies.includes("t302") : false))
 			break;
 
 		case 23:
-			return (player.timestudy.studies.includes(220 + Math.floor(col*2)) || player.timestudy.studies.includes(220 + Math.floor(col*2-1))) && (!player.timestudy.studies.includes((name%2 == 0) ? name-1 : name+1) || (player.masterystudies ? player.masterystudies.includes("t302") : false))
+			return (player.timestudy.studies.includes(220 + Math.floor(col*2)) || player.timestudy.studies.includes(220 + Math.floor(col*2-1))) && (!player.timestudy.studies.includes((name%2 == 0) ? name-1 : name+1) || (player.eternityUpgrades.includes(11) && player.aarexModifications.ngp3c) || (player.masterystudies ? player.masterystudies.includes("t302") : false))
 			break;
 	}
 }
 
-var all = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82 ,83, 91, 92, 93, 101, 102, 103, 111, 121, 122, 123, 131, 132, 133, 141, 142, 143, 151, 161, 162, 171, 181, 191, 192, 193, 201, 211, 212, 213, 214, 221, 222, 223, 224, 225, 226, 227, 228, 231, 232, 233, 234]
-var studyCosts = [1, 3, 2, 2, 3, 2, 4, 6, 3, 3, 3, 4, 6, 5, 4, 6, 5, 4, 5, 7, 4, 6, 6, 12, 9, 9, 9, 5, 5, 5, 4, 4, 4, 8, 7, 7, 15, 200, 400, 730, 300, 900, 120, 150, 200, 120, 900, 900, 900, 900, 900, 900, 900, 900, 500, 500, 500, 500]
+let vanillaStudies = [11, 21, 22, 33, 31, 32, 41, 42, 51, 61, 62, 71, 72, 73, 81, 82 ,83, 91, 92, 93, 101, 102, 103, 111, 121, 122, 123, 131, 132, 133, 141, 142, 143, 151, 161, 162, 171, 181, 191, 192, 193, 201, 211, 212, 213, 214, 221, 222, 223, 224, 225, 226, 227, 228, 231, 232, 233, 234]
+let ngcStudies = [12, 13, 23, 24, 25, 34, 35, 43, 44, 52, 63, 112, 113, 152, 172, 173, 194, 195, 196, 197, 202, 203]
+
+let all = vanillaStudies.concat(ngcStudies)
+let studyCosts = {
+	11: 1,
+	21: 3,		22: 2,
+	33: 2,		31: 3,		32: 2,
+	41: 4,		42: 6,
+	51: 3,
+	61: 3,		62: 3,
+	71: 4, 		72: 6,		73: 5,
+	81: 4,		82: 6,		83: 5,
+	91: 4, 		92: 5,		93: 7,
+	101: 4,		102: 6,		103: 6,
+	111: 12,
+	121: 9,		122: 9,		123: 9,
+	131: 5,		132: 5,		133: 5,
+	141: 4,		142: 4,		143: 4,
+	151: 8,
+	161: 7,		162: 7,
+	171: 15,
+	181: 200,
+	191: 400,	192: 730,	193: 300,
+	201: 900,
+	211: 120,	212: 150,	213: 200,	214: 120,
+	221: 900,	222: 900,	223: 900,	224: 900,	225: 900,	226: 900,	227: 900,	228: 900,
+	231: 500,	232: 500,	233: 500,	234: 500,
+
+	//NG Condensed
+	12: 6,		13: 5,
+	23: 6,		24: 7,		25: 20,
+	34: 5,	 	35: 10,
+	43: 4,	 	44: 2,
+	52: 9,
+	63: 7,
+	112: 12,	113: 24,
+	152: 25,
+	172: 10,	173: 25,
+	194: 450,	195: 375,	196: 375,	197: 500,
+	202: 200,	203: 200
+}
+
+function setupTimeStudies() {
+	let before = [... all]
+	let after = [... vanillaStudies]
+	if (tmp.ngC) after = after.concat(ngcStudies)
+	let combined = before.concat(after)
+	for (let i = 0; i < combined.length; i++) {
+		let id = combined[i]
+		if (before.includes(id) != after.includes(id)) {
+			document.getElementById(id).style.visibility = after.includes(id) ? "visible" : "hidden"
+			document.getElementById(id).className = "timestudy"
+		}
+	}
+	all = after
+	updateBoughtTimeStudies()
+}
+
 var performedTS
 function updateTimeStudyButtons(changed, forceupdate = false) {
 	if (!forceupdate && (changed ? player.dilation.upgrades.includes(10) : performedTS && !player.dilation.upgrades.includes(10))) return
@@ -263,52 +373,12 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 		}
 		return
 	}
-	for (var i = 0; i < all.length; i++) {
-		if (!player.timestudy.studies.includes(all[i])) {
-			var className
-			if (canBuyStudy(all[i]) && studyCosts[i] <= player.timestudy.theorem) {
-				if (all[i] == 71 || all[i] == 81 || all[i] == 91 || all[i] == 101) {
-					className = "timestudy normaldimstudy"
-				} else if (all[i] == 72 || all[i] == 82 || all[i] == 92 || all[i] == 102) {
-					className = "timestudy infdimstudy"
-				} else if (all[i] == 73 || all[i] == 83 || all[i] == 93 || all[i] == 103) {
-					className = "timestudy timedimstudy"
-				} else if (all[i] == 121 || all[i] == 131 || all[i] == 141) {
-					className = "timestudy activestudy"
-				} else if (all[i] == 122 || all[i] == 132 || all[i] == 142) {
-					className = "timestudy passivestudy"
-				} else if (all[i] == 123 || all[i] == 133 || all[i] == 143) {
-					className = "timestudy idlestudy"
-				} else if (all[i] == 221 || all[i] == 224 || all[i] == 225 || all[i] == 228 || all[i] == 231 || all[i] == 234) {
-					className = "timestudy darkstudy"
-				} else if (all[i] == 222 || all[i] == 223 || all[i] == 226 || all[i] == 227 || all[i] == 232 || all[i] == 233) {
-		      className = "timestudy lightstudy"
-				} else {
-					className = "timestudy"
-				}
-			}
-			else {
-				if (all[i] == 71 || all[i] == 81 || all[i] == 91 || all[i] == 101) {
-					className = "timestudylocked normaldimstudylocked"
-				} else if (all[i] == 72 || all[i] == 82 || all[i] == 92 || all[i] == 102) {
-					className = "timestudylocked infdimstudylocked"
-				} else if (all[i] == 73 || all[i] == 83 || all[i] == 93 || all[i] == 103) {
-					className = "timestudylocked timedimstudylocked"
-				} else if (all[i] == 121 || all[i] == 131 || all[i] == 141) {
-					className = "timestudylocked activestudylocked"
-				} else if (all[i] == 122 || all[i] == 132 || all[i] == 142) {
-					className = "timestudylocked passivestudylocked"
-				} else if (all[i] == 123 || all[i] == 133 || all[i] == 143) {
-					className = "timestudylocked idlestudylocked"
-				} else {
-					className = "timestudylocked"
-				}
-			}
-			document.getElementById(all[i]).className = className
-		}
+	for (let i = 0; i < all.length; i++) {
+		let id = all[i]
+		if (!player.timestudy.studies.includes(id)) updateTimeStudyClass(id, canBuyStudy(id) && player.timestudy.theorem >= studyCosts[id] ? "" : "locked")
 	}
 
-	for (var i = 1; i < 7; i++) {
+	for (let i = 1; i < 7; i++) {
 		if (player.dilation.studies.includes(i)) document.getElementById("dilstudy"+i).className = "dilationupgbought"
 		else if (player.timestudy.theorem >= ([null, 5e3, 1e6, 1e7, 1e8, 1e9, 1e24])[i] && (player.dilation.studies.includes(i - 1) || (i < 2 && ECTimesCompleted("eterc11") > 4 && ECTimesCompleted("eterc12") > 4 && getTotalTT(player) >= 13e3))) document.getElementById("dilstudy" + i).className = "dilationupg"
 		else document.getElementById("dilstudy" + i).className = "timestudylocked"
@@ -321,52 +391,49 @@ function updateTimeStudyButtons(changed, forceupdate = false) {
 	}
 }
 
+function updateTimeStudyClass(id, type = "") {
+	let className = "timestudy" + type
+	if (id > 70 && id < 110) {
+		className += " " + [null, "normal", "inf", "time"][id % 10] + "dimstudy"
+	} else if (id > 120 && id < 150) {
+		className += " " + [null, "active", "passive", "idle"][id % 10] + "study"
+	} else if (id > 220) {
+		className += " " + ["light", "dark"][id % 2] + "study"
+	}
+	document.getElementById(id).className = className
+}
+
+function updateBoughtTimeStudy(id) {
+	updateTimeStudyClass(id, "bought")
+}
+
 function updateBoughtTimeStudies() {
-	for (var i = 0; i < player.timestudy.studies.length; i++) {
-		var num = player.timestudy.studies[i]
-		if (typeof(num) != "number") num = parseInt(num)
-		if (!all.includes(num)) continue
-		if (num == 71 || num == 81 || num == 91 || num == 101) {
-			document.getElementById(num).className = "timestudybought normaldimstudy"
-		} else if (num == 72 || num == 82 || num == 92 || num == 102) {
-			document.getElementById(num).className = "timestudybought infdimstudy"
-		} else if (num == 73 || num == 83 || num == 93 || num == 103) {
-			document.getElementById(num).className = "timestudybought timedimstudy"
-		} else if (num == 121 || num == 131 || num == 141) {
-			document.getElementById(num).className = "timestudybought activestudy"
-		} else if (num == 122 || num == 132 || num == 142) {
-			document.getElementById(num).className = "timestudybought passivestudy"
-		} else if (num == 123 || num == 133 || num == 143) {
-			document.getElementById(num).className = "timestudybought idlestudy"
-		} else if (num == 221 || num == 224 || num == 225 || num == 228 || num == 231 || num == 234) {
-			document.getElementById(num).className = "timestudybought darkstudy"
-		} else if (num == 222 || num == 223 || num == 226 || num == 227 || num == 232 || num == 233) {
-			document.getElementById(num).className = "timestudybought lightstudy"
-		} else {
-			document.getElementById(num).className = "timestudybought"
-		}
+	for (let i = 0; i < player.timestudy.studies.length; i++) {
+		let id = player.timestudy.studies[i]
+		if (typeof(id) != "number") id = parseInt(id)
+		if (!all.includes(id)) continue
+		updateBoughtTimeStudy(id)
 	}	
 }
 
 function studiesUntil(id) {
-	var col = id % 10;
-	var row = Math.floor(id / 10);
-	var path = [0,0];
-	for (var i = 1; i < 4; i++){
+	let col = id % 10;
+	let row = Math.floor(id / 10);
+	let path = [0,0];
+	for (let i = 1; i < 4; i++){
 		if (player.timestudy.studies.includes(70 + i)) path[0] = i;
 		if (player.timestudy.studies.includes(120 + i)) path[1] = i;
 	}
 	if ((row > 10 && path[0] === 0) || (row > 14 && path[1] === 0)) {
 		return;
 	}
-	for (var i = 1; i < row; i++) {
+	for (let i = 1; i < row; i++) {
 		var chosenPath = path[i > 11 ? 1 : 0];
 		if (row > 6 && row < 11) var secondPath = col;
-		if ((i > 6 && i < 11) || (i > 11 && i < 15)) buyTimeStudy(i * 10 + (chosenPath === 0 ? col : chosenPath), 0, true);
-		if ((i > 6 && i < 11) && player.timestudy.studies.includes(201)) buyTimeStudy(i * 10 + secondPath, 0, true);
-		else for (var j = 1; all.includes(i * 10 + j) ; j++) buyTimeStudy(i * 10 + j, 0, true);
+		if ((i > 6 && i < 11) || (i > 11 && i < 15)) buyTimeStudy(i * 10 + (chosenPath === 0 ? col : chosenPath), true);
+		if ((i > 6 && i < 11) && player.timestudy.studies.includes(201)) buyTimeStudy(i * 10 + secondPath, true);
+		else for (var j = 1; all.includes(i * 10 + j) ; j++) buyTimeStudy(i * 10 + j, true);
 	}
-	buyTimeStudy(id, studyCosts[all.indexOf(id)], 0, true);
 }
 
 function respecTimeStudies(force, presetLoad) {
@@ -375,7 +442,7 @@ function respecTimeStudies(force, presetLoad) {
 	var gotAch = respecTime || player.timestudy.studies.length < 1
 	if (player.masterystudies) {
 		respecMastery=player.respecMastery||force
-		gotAch=gotAch&&(respecMastery||player.masterystudies.length<1)
+		gotAch=gotAch && (respecMastery||player.masterystudies.length<1)
 		delete player.quantum.autoECN
 	}
 	if (respecTime) {
@@ -388,18 +455,15 @@ function respecTimeStudies(force, presetLoad) {
 			var bru7activated = isBigRipUpgradeActive(7)
 			for (var i = 0; i < all.length; i++) {
 				if (player.timestudy.studies.includes(all[i]) && (!bru7activated || all[i] !== 192)) {
-					player.timestudy.theorem += studyCosts[i]
-					gotAch=false
+					player.timestudy.theorem += studyCosts[all[i]]
+					gotAch = false
 				}
 			}
 			if (player.masterystudies) if (player.timestudy.studies.length>1) player.quantum.wasted = false
 			player.timestudy.studies = bru7activated ? [192] : []
-			var ECCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
-			player.timestudy.theorem += ECCosts[player.eternityChallUnlocked]
-			
 		}
+		if (player.eternityChallUnlocked <= 12) resetEternityChallUnlocks()
 	}
-
 	if (respecMastery) {
 		var respecedMS = []
 		player.timestudy.theorem += masteryStudies.ttSpent
@@ -412,7 +476,8 @@ function respecTimeStudies(force, presetLoad) {
 			player.quantum.wasted = false
 			gotAch = false
 		}
-		player.masterystudies=respecedMS
+		player.masterystudies = respecedMS
+		if (player.eternityChallUnlocked >= 13) resetEternityChallUnlocks()
 		respecUnbuyableTimeStudies()
 		updateMasteryStudyCosts()
 		if (!presetLoad) {
@@ -421,8 +486,7 @@ function respecTimeStudies(force, presetLoad) {
 		}
 		drawMasteryTree()
 	}
-	player.eternityChallUnlocked = 0
-	updateEternityChallenges()
+
 	drawStudyTree()
 	if (!presetLoad) updateTimeStudyButtons(true)
 	if (gotAch) giveAchievement("You do know how these work, right?")
@@ -442,7 +506,7 @@ function respecUnbuyableTimeStudies() {
 				respecedTS.push(id)
 				if (id > 120 && id < 130) secondSplitPick = id % 10
 				if (id > 220) earlyDLStudies.push(id)
-			} else player.timestudy.theorem += studyCosts[t]
+			} else player.timestudy.theorem += studyCosts[id]
 		}
 	}
 	player.timestudy.studies=respecedTS
@@ -450,13 +514,13 @@ function respecUnbuyableTimeStudies() {
 
 function getTotalTT(tree) {
 	tree = tree.timestudy
-	var result = tree.theorem
+	let result = tree.theorem
 	if (tree.boughtDims) {
-		for (var id = 1; id < 7; id++) result += tree.ers_studies[id] * (tree.ers_studies[id] + 1) / 2
+		for (let id = 1; id < 7; id++) result += tree.ers_studies[id] * (tree.ers_studies[id] + 1) / 2
 		return result
 	} else {
-		var ecCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
-		for (var id = 0; id < all.length; id++) if (tree.studies.includes(all[id])) result += studyCosts[id]
+		let ecCosts = [null, 30, 35, 40, 70, 130, 85, 115, 115, 415, 550, 1, 1]
+		for (let id = 0; id < all.length; id++) if (tree.studies.includes(all[id])) result += studyCosts[all[id]]
 		return result + ecCosts[player.eternityChallUnlocked]
 	}
 }
@@ -497,13 +561,13 @@ function exportStudyTree() {
 		output.value = l.join('/');
 	} else {
 		var mtsstudies=[]
-		if (player.masterystudies) {
+		if (tmp.ngp3) {
 			for (id = 0; id < player.masterystudies.length; id++) {
 				var t = player.masterystudies[id].split("t")[1]
-				if (t) mtsstudies.push(t)
+				if (t) mtsstudies.push(t - 230)
 			}
 		}
-		output.value = player.timestudy.studies + (mtsstudies.length > 0 ? "," + mtsstudies + "|" : "|") + player.eternityChallUnlocked;
+		output.value = player.timestudy.studies + (mtsstudies.length ? "|ms" + mtsstudies : "") + "|" + player.eternityChallUnlocked
 	}
 	output.onblur = function() { parent.style.display = "none";}
 	output.focus();
@@ -534,26 +598,43 @@ function importStudyTree(input) {
 			}
 		}
 	} else {
-		var studiesToBuy = input.split("|")[0].split(",");
+		var splits = input.split("|")
+		var oldLength = player.timestudy.studies.length
+		var oldLengthMS = tmp.ngp3 && player.masterystudies.length
+
+		//Time studies
+		var studiesToBuy = splits[0].split(",");
 		var secondSplitPick = 0
 		var laterSecondSplits = []
 		var earlyDLStudies = []
 		var laterDLStudies = []
-		var oldLength = player.timestudy.length
-		if (player.masterystudies) var oldLengthMS = player.masterystudies.length
 		for (var i = 0; i < studiesToBuy.length; i++) {
-			var study=parseInt(studiesToBuy[i])
+			var study = parseInt(studiesToBuy[i])
 			if ((study < 120 || study > 150 || (secondSplitPick < 1 || study % 10 == secondSplitPick)) && (study < 220 || study > 240 || earlyDLStudies.includes(study + (study % 2 > 0 ? - 1 : 1)))) {
 				if (study > 120 && study < 150) secondSplitPick = study % 10
 				else if (study > 220 && study < 240) earlyDLStudies.push(study)
-				if (study > 240) buyMasteryStudy("t", study, true)
-				else buyTimeStudy(study, 0, true);
+				if (study > 240) {
+					//Old format compatability
+					buyMasteryStudy("t", study, true)
+				} else buyTimeStudy(study, true);
 			} else if (study < 150) laterSecondSplits.push(study)
 			else laterDLStudies.push(study)
 		}
-		for (var i=0; i < laterSecondSplits.length; i++) buyTimeStudy(laterSecondSplits[i], 0, true)
-		for (var i=0; i < laterDLStudies.length; i++) buyTimeStudy(laterDLStudies[i], 0, true)
-		var ec = parseInt(input.split("|")[1])
+		for (var i=0; i < laterSecondSplits.length; i++) buyTimeStudy(laterSecondSplits[i], true)
+		for (var i=0; i < laterDLStudies.length; i++) buyTimeStudy(laterDLStudies[i], true)
+
+		//Mastery Studies
+		if (splits.length == 3) {
+			var studiesToBuy = splits[1].split(",");
+			for (var i = 0; i < studiesToBuy.length; i++) {
+				var study = studiesToBuy[i]
+				if (study == "ms11") buyMasteryStudy("t", 241, true)
+				else buyMasteryStudy("t", parseInt(study) + 230, true)
+			}
+		}
+
+		//Eternity Challenges
+		var ec = parseInt(splits[splits.length - 1])
 		if (ec > 0) {
 			justImported = true;
 			if (ec > 12) {
@@ -562,7 +643,7 @@ function importStudyTree(input) {
 			} else document.getElementById("ec" + parseInt(input.split("|")[1]) + "unl").click();
 			setTimeout(function(){ justImported = false; }, 100);
 		}
-		if (player.masterystudies.length > oldLengthMS) {
+		if (tmp.ngp3 && player.masterystudies.length > oldLengthMS) {
 			updateMasteryStudyCosts()
 			updateMasteryStudyButtons()
 			updateMasteryStudyTextDisplay()
@@ -643,7 +724,7 @@ function save_preset(id) {
 function load_preset(id, reset) {
 	if (reset) {
 		var id7unlocked = player.infDimensionsUnlocked[7]
-		if (player.masterystudies !== undefined) if (player.quantum.bigRip.active) id7unlocked = true
+		if (inBigRip()) id7unlocked = true
 		if (player.infinityPoints.lt(player.eternityChallGoal) || !id7unlocked) return
 		player.respec = true
 		player.respecMastery = true
@@ -759,51 +840,160 @@ function changePresetTitle(id, placement) {
 	document.getElementById("preset_" + id + "_title").textContent = presets[id].title ? presets[id].title : "Preset #" + placement
 }
 
+function hasTimeStudy(x) {
+	return tmp.eterUnl && player.timestudy.studies.includes(x)
+}
+
 //Time Study Effects
 let tsMults = {
-	11: function() {
-		let bigRipped = tmp.ngp3 && tmp.qu.bigRip.active
+	11() {
+		let bigRipped = inBigRip()
 		let log = -player.tickspeed.div(1e3).pow(0.005).times(0.95).plus(player.tickspeed.div(1e3).pow(0.0003).times(0.95)).log10()
 		if (bigRipped && log > 900) log = Math.sqrt(log * 900)
 		else if (player.aarexModifications.newGameExpVersion) log = Math.min(log, 25000) // buff to NG+++^
 		else if (player.galacticSacrifice === undefined) log = Math.min(log, 2500)
 		if (log < 0) log = 0
 		
-		if (player.galacticSacrifice) return Decimal.pow(10, log)
-		if (tmp.ngp3l || !bigRipped) return Decimal.pow(10, log)
-		log = softcap(log, "ts11_log_big_rip", 1)
+		if (player.galacticSacrifice || !bigRipped) return Decimal.pow(10, log)
+		log = softcap(log, "ts11_log_big_rip")
 		
 		return Decimal.pow(10, log)
 	},
-	32: function() {
-		return Math.pow(Math.max(player.resets, 1), player.aarexModifications.newGameMult ? 4 : 1)
+	32() {
+		let ret = Math.pow(Math.max(player.resets, 1), player.aarexModifications.newGameMult ? 4 : 1)
+		if (player.timestudy.studies.includes(197) && tmp.ngC) ret = Math.pow(ret, 3)
+		return ret
 	},
-	41: function() {
+	41() {
+		if (tmp.ngC) return 1.1
 		return player.aarexModifications.newGameExpVersion ? 1.5 : 1.2
 	},
-	42: function() {
+	42() {
+		if (tmp.ngC) return 29/30
 		return (player.aarexModifications.newGameExpVersion ? 12 : 13) / 15
 	},
-	61: function() {
-		return player.aarexModifications.newGameExpVersion ? 100 : 10
+	51(){
+		if (tmp.ngC) return Decimal.pow((ngC.save.repl + 1) * (player.replicanti.galaxies + 1), 160)
+		return player.aarexModifications.newGameExpVersion ? 1e30 : 1e15
 	},
-	62: function() {
+	61() {
+		return tmp.ngC ? Decimal.pow(25, Math.log10(player.replicanti.amount.max(1).log10()/308.25+1)/Math.log10(2)) : (tmp.newNGP3E ? 100 : 10)
+	},
+	62() {
 		let r = player.aarexModifications.newGameExpVersion ? 4 : 3
 		if (tmp.ngex) r--
+		if (tmp.ngC) r/=2
 		return r
 	},
-	211: function() {
-		return player.galacticSacrifice === undefined ? 5 : tmp.ngp3l ? 0 : 1
+	211() {
+		return player.galacticSacrifice === undefined ? 5 :  1
 	},
-	212: function() {
+	212() {
 		let r = player.timeShards.max(2).log2()
-		if (player.aarexModifications.newGameExpVersion) return Math.min(Math.pow(r, 0.006), 1.15)
+		if (player.aarexModifications.newGameExpVersion || tmp.ngC) return Math.min(Math.pow(r, 0.006), 1.15)
 		return Math.min(Math.pow(r, 0.005), 1.1)
 	},
-	213: function() {
-		return tmp.ngex ? 10 : 20
+	213() {
+		return tmp.ngC ? 2 : (tmp.ngex ? 10 : 20)
 	},
-	222: function() {
-		return player.galacticSacrifice === undefined ? 2 : tmp.ngp3l ? 0 : .5
+	222() {
+		return player.galacticSacrifice === undefined ? 2 : .5
+	},
+
+	//NG Condensed
+	13() {
+		return Math.pow(player.galaxies + 1, 4/9)
+	},
+	25() {
+		let x = Decimal.pow(player.infinityPower.plus(1).log10() + 1, 10);
+		if (hasTimeStudy(197)) x = x.pow(3)
+		if (hasDilationUpg("ngp3c3")) x = x.pow(getDil46Mult())
+		return x
+	},
+	35() {
+		let ip = player.infinityPoints
+		let reached = false
+		if (ip.gte("1e9000")) reached = true
+		ip = ip.div("1e9500")
+
+		let x = Decimal.pow(ip.plus(1).log10()/100+1, 4).max(10)
+		if (reached && ip.lt(1)) x = new Decimal(10) //this does nothing?
+		return x
+	},
+	43() {
+		let x = player.replicanti.galaxies * 0.02
+		if (hasTimeStudy(197)) x *= 3
+		return x + 1
+	},
+	52() {
+		let x = Math.sqrt(player.replicanti.galaxies/2)
+		if (hasTimeStudy(172)) x *= Math.cbrt(player.replicanti.galaxies/10+1)
+		return x + 1
+	},
+	63() {
+		let x = player.eternityPoints.plus(1).pow(100)
+		if (x.gte("1e1000")) x = Decimal.pow(x.log10(), 1000/3)
+		return x
+	},
+	152() {
+		return Decimal.pow(10, Math.sqrt(player.galaxies * 5))
+	},
+	172() {
+		let repl = player.replicanti.amount
+		if (hasTimeStudy(197)) repl = repl.pow(Math.sqrt(player.replicanti.galaxies/2.5+1))
+		else if (repl.gte("1e4000")) repl = Decimal.pow(repl.log10(), 1110.49).min(repl)
+	
+		let x = repl.plus(1).pow(1e-3)
+		if (x.gte(1e285)) x = new Decimal(x.log10()).times(Decimal.div(1e285, 285))
+		return x
+	},
+	191() {
+		let inf = getInfinitied()
+		let x = Decimal.add(inf, 1).log10()/5
+		return x
+	},
+	202() {
+		let cond = player.condensed.normal.reduce((a,c) => (a||0)+(c||0))
+		let x = Decimal.pow(10, 25000 * Math.sqrt(cond))
+		return x
+	},
+	203() {
+		let cond = player.condensed.time.reduce((a,c) => (a||0)+(c||0))
+		let x = Decimal.pow(10, 50 * Math.sqrt(cond))
+		return x
+	},
+	221() {
+		return Decimal.pow(1.0025, player.resets)
+	},
+	225() {
+		let x = Math.floor(player.replicanti.amount.e / 1e3)
+		let softcapEff = 2
+		if (isQCRewardActive(8)) softcapEff *= tmp.qcRewards[8]
+
+		if (x >= 100) x = Math.floor(Math.sqrt(0.25 + (x - 99) * softcapEff) + 98.5)
+		return x
+	},
+	226() {
+		let x = Math.floor(player.replicanti.gal / 15)
+		let softcapEff = 2
+		if (isQCRewardActive(8)) softcapEff *= tmp.qcRewards[8]
+
+		if (x >= 100) x = Math.floor(Math.sqrt(0.25 + (x - 99) * softcapEff) + 98.5)
+		return x
+	},
+	227() {
+		return Math.pow(tmp.sacPow.max(10).log10(), 10)
+	},
+	231() {
+		return Decimal.pow(Math.max(player.resets, 1), 0.3)
+	},
+	232() {
+		var exp = 0.2
+		if (tmp.ngp3) {
+			if (player.ghostify.ghostlyPhotons.unl) exp = tmp.be ? 0.2 : 0
+			else if (player.galaxies >= 1e4 && !tmp.be) exp *= Math.max(6 - player.galaxies / 2e3, 0)
+		}
+		if (exp == 0) return 1
+		return Math.pow(1 + initialGalaxies() / 1000, exp)
 	}
 }

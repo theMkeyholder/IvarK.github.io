@@ -23,6 +23,12 @@ function bendTimeCheck(){
 	if (tmp.tsReduce < 0.001) giveAchievement("Do you even bend time bro?")
 }
 
+function getOldAgeRequirement() {
+	let sec = Math.floor(new Date().getTime() / 1000 * 3) / 3
+	sec += 1970 * 365.24 * 24 * 3600
+	return Decimal.pow(10, 3 * sec)
+}
+
 function checkMarathon(){
 	if (getDimensionProductionPerSecond(1).gt(player.money) && !player.achievements.includes("r44")) {
 		Marathon += player.options.updateRate/1000;
@@ -33,7 +39,7 @@ function checkMarathon(){
 }
 
 function checkMarathon2(){
-	if (DimensionProduction(1).gt(player.infinityPower) && player.currentEternityChall != "eterc7" && !player.achievements.includes("r113")) {
+	if (infDimensionProduction(1).gt(player.infinityPower) && player.currentEternityChall != "eterc7" && !player.achievements.includes("r113")) {
 		Marathon2+=player.options.updateRate/1000;
 		if (Marathon2 >= 60) giveAchievement("Long lasting relationship");
 	} else {
@@ -54,11 +60,11 @@ function checkSupersanic(){
 
 function checkForEndMe() {
 	var temp = 0
-	for (var i=0; i<getTotalNormalChallenges(); i++) {
+	for (var i=0; i < getTotalNormalChallenges(); i++) {
 		temp += player.challengeTimes[i]
 	}
 	if (temp <= 1800) giveAchievement("Not-so-challenging")
-	if (temp <= 50) giveAchievement("End me")
+	if (temp <= 20 || (temp <= 50 && player.aarexModifications.ngmX >= 4)) giveAchievement("End me")
 	var temp2 = 0
 	for (var i = 0; i < order.length; i++) temp2 += player.infchallengeTimes[i]
 	infchallengeTimes = temp2
@@ -67,7 +73,7 @@ function checkForEndMe() {
 
 function checkYoDawg(){
 	if (!player.achievements.includes("r111") && player.lastTenRuns[9][1].neq(0)) {
-		var n = 0;
+		let n = 0;
 		for (i = 0; i < 9; i++) {
 			if (player.lastTenRuns[i][1].gte(player.lastTenRuns[i+1][1].times(Number.MAX_VALUE))) n++
 		}
@@ -121,7 +127,7 @@ function checkReplicantiBasedReqAchieve(){
 	if (player.replicanti.galaxies >= 180 * player.galaxies && player.galaxies >= 1) giveAchievement("Popular music")
 	if (player.replicanti.amount.gt(new Decimal(tmp.ngex?"1e15000":"1e20000"))) giveAchievement("When will it be enough?")
 	if (player.boughtDims && player.replicanti.amount.gt("1e1000000")) giveAchievement("Do you really need a guide for this?");
-	if (player.replicanti.amount.gt(new Decimal("1e100000"))) giveAchievement("It will never be enough")
+	if (player.replicanti.amount.gt(tmp.ngp3 ? "1e75000" : "1e100000")) giveAchievement("It will never be enough")
 }
 
 function checkResetCountReqAchieve(){
@@ -153,27 +159,19 @@ function checkTickspeedReqAchieve(){
 }
 
 function newDimension() {
-	var req = getNewInfReq()
+	let req = getNewInfReq()
 	if (player.money.lt(req.money)) return
 	player.infDimensionsUnlocked[req.tier-1] = true
 	if (req.tier == 4) giveAchievement("NEW DIMENSIONS???")
 	if (req.tier == 8) giveAchievement("0 degrees from infinity")
 }
 
-function checkOtherPreNGp3Achieve(){
+function checkOtherPreNGp3Achieve() {
 	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
 	if (tmp.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
 		if (player.masterystudies[id].split("t")[1]) ableToGetRid2 = false
 	}
 	if (player.why >= 1e6) giveAchievement("Should we tell them about buy max...")
-	if (player.exdilation !== undefined) {
-		let ableToGetRid3 = ableToGetRid2 && player.dilation.upgrades.length === 0 && player.dilation.rebuyables[1] === 0 && player.dilation.rebuyables[2] === 0 && player.dilation.rebuyables[3] === 0
-		if (player.blackhole.power.gt(0)) giveAchievement("A newer beginning.")
-		if (player.blackhole.power.gt(1e6)) giveAchievement("1 million is still a lot")
-		if (player.exdilation.unspent.gt(1e5)) giveAchievement("Finally I'm out of that channel");
-		if (ableToGetRid2 && player.infinityPoints.log10() >= 20000) giveAchievement("I already got rid of you.")
-	}
-	checkUniversalHarmony()
 	if (infchallengeTimes < 7.5) giveAchievement("Never again")
 	if (player.totalTimePlayed >= 10 * 60 * 60 * 24 * 8) giveAchievement("One for each dimension")
 	if (Math.random() < 0.00001) giveAchievement("Do you feel lucky? Well do ya punk?")
@@ -188,7 +186,6 @@ function checkOtherPreNGp3Achieve(){
 	if (player.spreadingCancer >= 1000000) giveAchievement("Cancer = Spread")
 	if (player.infinitied >= 10) giveAchievement("That's a lot of infinites");
 	if (player.break) giveAchievement("Limit Break")
-	if (player.meta) if (player.meta.resets >= 10) giveAchievement("Meta-boosting to the max")
 	if (tmp.sacPow >= 600) giveAchievement("The Gods are pleased");
 	if (tmp.sacPow.gte(Number.MAX_VALUE)) giveAchievement("Yet another infinity reference")
 	if (tmp.sacPow.gte(Decimal.pow(10, 9000)) && !inNC(11)) giveAchievement("IT'S OVER 9000")
@@ -200,6 +197,22 @@ function checkOtherPreNGp3Achieve(){
 	if (player.bestEternity <= 0.01) giveAchievement("Less than or equal to 0.001");
 }
 
+function checkNGUdAchieve() {
+	var ableToGetRid2 = player.timestudy.studies.length < 1 && player.dilation.active 
+	if (tmp.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
+		if (player.masterystudies[id].split("t")[1]) ableToGetRid2 = false
+	}
+	let ableToGetRid3 = ableToGetRid2 && player.dilation.upgrades.length === 0 && player.dilation.rebuyables[1] === 0 && player.dilation.rebuyables[2] === 0 && player.dilation.rebuyables[3] === 0
+	if (player.blackhole.power.gt(0)) giveAchievement("A newer beginning.")
+	if (player.blackhole.power.gt(1e6)) giveAchievement("1 million is still a lot")
+	if (player.exdilation.unspent.gt(1e5)) giveAchievement("Finally I'm out of that channel");
+	if (ableToGetRid2 && player.infinityPoints.log10() >= 20000) giveAchievement("I already got rid of you.")
+}
+
+function checkNGp2Achieve() {
+	if (player.meta.resets >= 10) giveAchievement("Meta-boosting to the max")
+}
+
 function getTwoDecaysBool(){
 	branches = ['r', 'g', 'b']
 	for (i = 0; i < 3; i++){
@@ -209,7 +222,7 @@ function getTwoDecaysBool(){
 	return true
 }
 
-function ngP3AchieveCheck(){
+function preHiggsNGp3AchieveCheck(){	
 	let checkEmpty = player.timestudy.studies.length < 1
 	if (tmp.ngp3) for (id = 0; id < player.masterystudies.length; id++) {
 		if (player.masterystudies[id].split("t")[1]) checkEmpty = false
@@ -260,7 +273,7 @@ function ngP3AchieveCheck(){
 		if (!player.timestudy.studies.includes(11) && player.timeShards.log10() >= 215) giveAchievement("You're not really smart.")
 		if (ableToGetRid7 && player.infinityPoints.log10() >= 3.5e5) giveAchievement("And so your life?")
 		if (tmp.qu.breakEternity.eternalMatter.gte(9.999999e99)) giveAchievement("This achievement doesn't exist 4")
-		if (ableToGetRid8 && player.infinityPoints.log10() >= 9.5e5) giveAchievement("Please answer me why you are dying.")
+		if (ableToGetRid8 && player.infinityPoints.log10() >= 9.4e5) giveAchievement("Please answer me why you are dying.")
 		if (ableToGetRid9 && player.infinityPoints.log10() >= 1.8e6) giveAchievement("Aren't you already dead?")
 		if (ableToGetRid10 && player.infinityPoints.log10() >= 2.25e4) giveAchievement("I give up.")
 		if (player.matter.log10() >= 5000) giveAchievement("Really?")
@@ -280,30 +293,66 @@ function ngP3AchieveCheck(){
 	if (tmp.qu.best <= 10) giveAchievement("Quantum doesn't take so long")
 	if (player.masterystudies.includes("d13")) giveAchievement("Do protons decay?")
 	if (getTotalRadioactiveDecays() >= 10) giveAchievement("Radioactive Decaying to the max!")
-	if (quantumed) giveAchievement("Sub-atomic")
+	if (tmp.quUnl) giveAchievement("Sub-atomic")
+}
 
-	if (tmp.ngp3l) return // NG+3.1 achievements from this point on
-
+function atHiggsAchCheck(){
 	if (player.ghostify.hb.higgs >= 1) giveAchievement("The Holy Particle")
 	if (player.ghostify.ghostlyPhotons.enpowerments >= 25) giveAchievement("Bright as the Anti-Sun")
-	if (player.quantum.quarks.log10() >= 40000) giveAchievement("Are these another...")
-	if (player.ghostify.reference && minUQ.decays >= 2) giveAchievement("... references to EC8?")
+	if (player.quantum.quarks.log10() >= 4e4) giveAchievement("Are these another...")
+	if (player.ghostify.reference && getMinimumUnstableQuarks().decays >= 2) giveAchievement("... references to EC8?")
 	if (player.ghostify.hb.bosonicSemipowerment && player.ghostify.ghostlyPhotons.lights[7] >= tmp.leReq / 2) giveAchievement("Bosonic Semipowerment")
 	if (player.ghostify.times >= Math.pow(Number.MAX_VALUE, 1/4)) giveAchievement("The Ghostliest Side")
 	if (player.money.log10() >= 1e18) giveAchievement("Meta-Quintillion")
 	if (player.unstableThisGhostify <= 10 && getTwoDecaysBool()) giveAchievement("... references to EC8?")
 }
 
+function atGravDimsAchCheck(){
+	if (GDs.unlocked()) giveAchievement("The Power of Relativity")
+	if (tmp.pcc.normal >= 35) giveAchievement("The Forbidden Challenge")
+	if (player.ghostify.ghostParticles.plus(1).log10() >= 5e3) giveAchievement("Einstein's Ghost")
+	if (tmp.qu.nanofield.rewards >= 250) giveAchievement("Gigafield")
+	if (ranking >= 242.4) giveAchievement("X-Ranked")
+	if (tmp.qu.bigRip.bestThisRun.plus(1).log10() >= Math.sqrt(2) * 1e12) giveAchievement("Do you even how to?")
+	// Brutally Challenging is on quantum_challenges.js
+	if (player.ghostify.time <= 100 && player.money.plus(1).log10() >= 1/0) giveAchievement("Auto-Ghost Speedrunning")
+}
+
+function atPlankAchCheck(){
+	giveAchievement("Quantum Scality")
+	if (player.ghostify.hb.higgs >= 308) giveAchievement("Infinitely Massive")
+	if (player.replicanti.amount.plus(1).log10() >= 1e10) giveAchievement("Replicated Universes")
+	if (tmp.ig.plus(1).log10() >= 1/0) giveAchievement("The Supervoid")
+	if (GDs.tmp.gsc >= 1/0) giveAchievement("Truly Dilating Time")
+	if (player.ghostify.ghostlyPhotons.enpowerments >= 1/0) giveAchievement("Spectre Prisms")
+	if (!pl.on() && pl.save.immortal && player.money.plus(1).log10() >= 1/0) giveAchievement("Universe Immortality")
+	//
+}
+
+function beyondHiggsAchieveCheck(){
+	atHiggsAchCheck()
+	atGravDimsAchCheck()
+	if (tmp.ngpX >= 5) atPlankAchCheck()
+}
+
 function ALLACHIEVECHECK(){
-	//PRE NG+3 ACHIEVEMENTS ONLY!!!
-	checkIPReqAchieve() //IP Req
-	checkEPReqAchieve() //EP Req
-	checkReplicantiBasedReqAchieve() //Replicanti based Req
-	checkResetCountReqAchieve() //Reset Count Req
-	checkMatterAMNDReqAchieve() //AM/ND/Matter Req
-	checkInfPowerReqAchieve() //IPo Req
-	checkTickspeedReqAchieve() //Tickspeed/tick upgs based
-	checkOtherPreNGp3Achieve() //Other
-	
-	if (tmp.ngp3) ngP3AchieveCheck()
+	if (!player.achievements.includes("ng3p81")) {
+		//PRE NG+3 ACHIEVEMENTS ONLY!!!
+		checkIPReqAchieve() //IP Req
+		checkEPReqAchieve() //EP Req
+		checkReplicantiBasedReqAchieve() //Replicanti based Req
+		checkResetCountReqAchieve() //Reset Count Req
+		checkMatterAMNDReqAchieve() //AM/ND/Matter Req
+		checkInfPowerReqAchieve() //IPo Req
+		checkTickspeedReqAchieve() //Tickspeed/tick upgs based
+		checkOtherPreNGp3Achieve() //Other
+
+		if (player.exdilation) checkNGUdAchieve()
+		if (player.meta) checkNGp2Achieve()
+		if (player.exdilation || player.meta) checkUniversalHarmony()
+	}
+	if (!tmp.ngp3) return
+
+	if (!player.achievements.includes("ng3p101")) preHiggsNGp3AchieveCheck()
+	if (player.ghostify && player.ghostify.hb) beyondHiggsAchieveCheck()
 }

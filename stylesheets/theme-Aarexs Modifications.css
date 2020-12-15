@@ -157,7 +157,7 @@ strong { color: #0072e5 }
 #bigcrunch:hover, #infinitybtn:hover, #pastinfs:hover, #postInfinityButton:hover, #idtabbtn button:hover, .newdim:hover, #infinitydimensions td:nth-child(4) .storebtn:hover, #replicantichance.storebtn:hover, #replicantiinterval.storebtn:hover, #replicantimax.storebtn:hover, #challTabButtons td:nth-child(2) button:hover, #infchallengesbtn:hover, .respecbtn:hover {
     background-color: #e2bd00 !important
 }
-.IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #infDimEffectPower, #replicantiamount, #replicantimult {
+.IPAmount1, .IPAmount2, #infPowAmount, #infDimMultAmount, #infDimEffectPower, #replicantiamount, #replicantimult, #replCond, #replCond1, #replCond2 {
     color: #e2bd00 !important
 }
 .infinistorebtn1, .infinistorebtn3 {
@@ -425,8 +425,8 @@ strong { color: #0072e5 }
 	animation: none !important
 }
 #dilstudy7.dilationupg:hover, #electronstabbtn button:hover, #dilstudy7.dilationupgbought, #electrons .gluonupgrade.storebtn:hover { background-color: #d2e500 !important }
-#electronsAmount, #electronsTranslation { color: #d2e500 !important }
-#electronsEffect { color: #00e500 !important }
+#elc_percentage, #elc_amount, #elc_translation { color: #d2e500 !important }
+#elc_effect { color: #00e500 !important }
 .quantumchallengediv {
     background-color: #191919 !important;
     font-family:'Inconsolata', monospace !important;
@@ -529,13 +529,13 @@ strong { color: #0072e5 }
 	color: #e5e5e5 !important;
 	box-shadow: none !important
 }
-.bigripbtn {
+.bigripbtn, .quickBigRip {
 	background-color: #191919 !important;
 	border: 3px solid #5be567 !important;
 	color: #e5e5e5 !important;
 	box-shadow: none !important
 }
-#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
+#dilstudy14.dilationupg:hover, #dilstudy14.dilationupgbought, .bigripbtn:hover, .quickBigRip:hover, .gluonupgrade.bigrip:hover, .gluonupgradebought.bigrip {
 	background-color: #5be567 !important;
 	color: #191919 !important;
 	box-shadow: none !important
@@ -704,17 +704,40 @@ strong { color: #0072e5 }
 	transform: translate(-50%, 10%)
 }
 .gluonupgrade.hb {
-	background: radial-gradient(#e5e500, transparent 50%, transparent 100%), radial-gradient(#727200, #727200, transparent 60%, transparent 100%), linear-gradient(transparent, #727200 50%, transparent 100%), radial-gradient(#3f3f00, #191919 50%, #3f3f00 100%);
+	background: radial-gradient(#007fff, transparent 50%, transparent 100%), radial-gradient(#001fff, #007fff, transparent 60%, transparent 100%), linear-gradient(transparent, #007fff 50%, transparent 100%), radial-gradient(#bfdfff, #191919 50%, #bfdfff 100%);
 	background-position: center;
-	border-color: #727200 !important;
-	color: #e5e5e5 !important;
-	text-shadow: 0px 0px 3px #3f3f00, 0px 0px 6px #3f3f00;
-	animation: hb 5s ease infinite
+	border-color: #007fff !important
 }
 .gluonupgrade.hb:hover {
-	border-color: #e5e500 !important;
-	box-shadow: 0px 0px 12px #e5e500, inset 0px 0px 24px #e5e500
+	border-color: #bfdfff !important;
+	color: #e5e5e5 !important
 }
+.gv, #gdtabbtn button {
+	border-color: #0b298d !important;
+	animation: none
+}
+.gv:hover, #gdtabbtn button:hover {
+	background-color: #0b298d !important;
+	color: #0f1529 !important
+}
+#gvPow, #gvEne, #gvEneMult {
+	color: #485faa !important
+}
+#gvRadioPow {
+	color: #5c8340 !important
+}
+.planckbtn {
+	border-color: #2f3f00 !important;
+	color: #bfff00 !important;
+}
+.planckbtn:hover {
+	border-color: #5f7f00 !important;
+	color: #efffbf !important;
+}
+.pl {
+	color: #bfff00 !important;
+}
+
 .notifyjs-bootstrap-info {
     background-color: #0072e5;
     font-family:'Inconsolata', monospace;

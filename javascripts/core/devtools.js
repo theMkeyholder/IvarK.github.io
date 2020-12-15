@@ -28,7 +28,34 @@ dev.giveAllNGAchievements = function() {
 	updateAchievements()
 }
 
+dev.forceMaxDB = function(){
+	let x = .5
+	let y = 0
+	if (getShiftRequirement(0).tier < 8) {
+		player.resets += Decimal.gte(getAmount(getShiftRequirement(0).tier), getShiftRequirement(0).amount) ? 1 : 0
+		return
+	}
+	let a = getAmount(8)
+	while (getFixedShiftReq(player.resets + 2 * x - 1) <= a) x *= 2
+	while (x >= 1) {
+		if (a >= getFixedShiftReq(player.resets + x + y - 1)) y += x
+		x /= 2
+	}
+	player.resets += y
+}
 
+dev.forceMaxTDB = function(){
+	let x = .5
+	let y = 0
+	//change to TSB
+	let a = getAmount(8)
+	while (getTickspeedBoostRequirement(2*x - 1).amount <= a) x *= 2
+	while (x >= 1) {
+		if (a >= getTickspeedBoostRequirement(x + y).amount) y += x
+		x /= 2
+	}
+	player.tickspeedBoosts += y
+}
 
 dev.doubleEverything = function() {
 	Object.keys(player).forEach( function(key) {
@@ -216,19 +243,8 @@ dev.addNeutrinos = function(n){
 }
 
 dev.giveAllEmpowerments = function(){
-	var uv = player.ghostify.ghostlyPhotons.lights[7]
-	var le = player.ghostify.ghostlyPhotons.enpowerments
-	var x = 1
-	var y = 0
-	while (uv >= getLightEmpowermentReq(le + x * 2 - 1)) x *= 2
-	while (x >= 1) {
-		if (uv >= getLightEmpowermentReq(le + x + y - 1)) y += x
-		x /= 2
-	}
-	player.ghostify.ghostlyPhotons.enpowerments += y
+	let old = player.ghostify.ghostlyPhotons.enpowerments
+	maxLightEmpowerments()
+	let diff = player.ghostify.ghostlyPhotons.enpowerments - old > 0
+	$.notify("Gave " + getFullExpansion(diff) + " Light Empowerments.", diff ? "success" : "error")
 }
-
-
-
-
-

@@ -1,234 +1,280 @@
 const allAchievements = {
-  r11 : "You gotta start somewhere",
-  r12 : "100 antimatter is a lot",
-  r13 : "Half life 3 confirmed",
-  r14 : "L4D: Left 4 Dimensions",
-  r15 : "5 Dimension Antimatter Punch",
-  r16 : "We couldn't afford 9",
-  r17 : "Not a luck related achievement",
-  r18 : "90 degrees to infinity",
-  r21 : "To infinity!",
-  r22 : "Fake News",
-  r23 : "The 9th Dimension is a lie",
-  r24 : "Antimatter Apocalypse",
-  r25 : "Boosting to the max",
-  r26 : "You got past The Big Wall",
-  r27 : "Double Galaxy",
-  r28 : "There's no point in doing that",
-  r31 : "I forgot to nerf that",
-  r32 : "The Gods are pleased",
-  r33 : "That's a lot of infinites",
-  r34 : "You didn't need it anyway",
-  r35 : "Don't you dare sleep",
-  r36 : "Claustrophobic",
-  r37 : "That's fast!",
-  r38 : "I don't believe in Gods",
-  r41 : "Spreading Cancer",
-  r42 : "Supersanic",
-  r43 : "Zero Deaths",
-  r44 : "Over in 30 seconds",
-  r45 : "Faster than a potato",
-  r46 : "Multidimensional",
-  r47 : "Daredevil",
-  r48 : "AntiChallenged",
-  r51 : "Limit Break",
-  r52 : "Age of Automation",
-  r53 : "Definitely not worth it",
-  r54 : "That's faster!",
-  r55 : "Forever isn't that long",
-  r56 : "Many Deaths",
-  r57 : "Gift from the Gods",
-  r58 : "Is this hell?",
-  r61 : "Bulked up",
-  r62 : "Oh hey, you're still here",
-  r63 : "A new beginning.",
-  r64 : "1 million is a lot",
-  r65 : "Not-so-challenging",
-  r66 : "Faster than a squared potato",
-  r67 : "Infinitely Challenging",
-  r68 : "You did this again just for the achievement right?",
-  r71 : "ERROR 909: Dimension not found",
-  r72 : "Can't hold all these infinities",
-  r73 : "This achievement doesn't exist",
-  r74 : "End me",
-  r75 : "NEW DIMENSIONS???",
-  r76 : "One for each dimension",
-  r77 : "How the antitables have turned",
-  r78 : "Blink of an eye",
-  r81 : "Hevipelle did nothing wrong",
-  r82 : "Anti-antichallenged",
-  r83 : "YOU CAN GET 50 GALAXIES!??",
-  r84 : "I got a few to spare",
-  r85 : "All your IP are belong to us",
-  r86 : "Do you even bend time bro?",
-  r87 : "2 Million Infinities",
-  r88 : "Yet another infinity reference",
-  r91 : "Ludicrous Speed",
-  r92 : "I brake for nobody",
-  r93 : "MAXIMUM OVERDRIVE",
-  r94 : "Minute of infinity",
-  r95 : "Is this safe?",
-  r96 : "Time is relative",
-  r97 : "Yes. This is hell.",
-  r98 : "0 degrees from infinity",
-  r101 : "Costco sells dimboosts now",
-  r102 : "This mile took an Eternity",
-  r103 : "This achievement doesn't exist II",
-  r104 : "That wasn't an eternity",
-  r105 : "Infinite time",
-  r106 : "The swarm",
-  r107 : "Do you really need a guide for this?",
-  r108 : "We could afford 9",
-  r111 : "Yo dawg, I heard you liked infinities...",
-  r112 : "Never again",
-  r113 : "Long lasting relationship",
-  r114 : "You're a mistake",
-  r115 : "I wish I had gotten 7 eternities",
-  r116 : "Do I really need to infinity",
-  r117 : "8 nobody got time for that",
-  r118 : "IT'S OVER 9000",
-  r121 : "Can you get infinite IP?",
-  r122 : "You're already dead.",
-  r123 : "5 more eternities until the update",
-  r124 : "Eternities are the new infinity",
-  r125 : "Like feasting on a behind",
-  r126 : "Popular music",
-  r127 : "But I wanted another prestige layer...",
-  r128 : "What do I have to do to get rid of you",
-  r131 : "No ethical consumption",
-  r132 : "Unique snowflakes",
-  r133 : "I never liked this infinity stuff anyway",
-  r134 : "When will it be enough?",
-  r135 : "Faster than a potato^286078",
-  r136 : "I told you already, time is relative",
-  r137 : "Now you're thinking with dilation!",
-  r138 : "This is what I have to do to get rid of you.",
-  ngud11 : "A newer beginning.",
-  ngud12 : "1 million is still a lot",
-  ngud13 : "Time is absolute",
-  ngud14 : "Finally I'm out of that channel",
-  ngud16 : "We couldn't afford 5",
-  ngud18 : "I already got rid of you.",
-  ngpp11 : "I'm so meta",
-  ngpp12 : "And still no ninth dimension...",
-  ngpp13 : "In the grim darkness of the far endgame",
-  ngpp14 : "Meta-boosting to the max",
-  ngpp15 : "The cap is a million, not a trillion",
-  ngpp16 : "It will never be enough",
-  ngpp17 : "GAS GAS GAS",
-  ngpp18 : "Universal harmony",
-  ng3p11 : "I don't have enough fuel!",
-  ng3p12 : "Sub-atomic",
-  ng3p13 : "Hadronization",
-  ng3p14 : "Work harder.",
-  ng3p15 : "No more tax fraud!",
-  ng3p16 : "And the winner is...",
-  ng3p17 : "Old age",
-  ng3p18 : "I already got rid of you...",
-  ng3p21 : "Special Relativity",
-  ng3p22 : "We are not going squared.",
-  ng3p23 : "This achievement doesn't exist 3",
-  ng3p24 : "Old memories come true",
-  ng3p25 : "Twice in a row",
-  ng3p26 : "Infinity Morals",
-  ng3p27 : "Intergalactic",
-  ng3p28 : "Seriously, I already got rid of you.",
-  ng3p31 : "ERROR 500: INTERNAL DIMENSION ERROR",
-  ng3p32 : "The truth of anti-challenged",
-  ng3p33 : "Never make paradoxes!",
-  ng3p34 : "The Challenging Day",
-  ng3p35 : "An ant office?",
-  ng3p36 : "I can’t get my multipliers higher!",
-  ng3p37 : "No dilation means no production.",
-  ng3p38 : "I don't want you to live anymore.",
-  ng3p41 : "Time is not relative",
-  ng3p42 : "ERROR 404: DIMENSIONS NOT FOUND",
-  ng3p43 : "Impossible expectations",
-  ng3p44 : "Studies are wasted",
-  ng3p45 : "Do protons decay?",
-  ng3p46 : "Hardly marked",
-  ng3p47 : "Stop blocking me!",
-  ng3p48 : "Are you currently dying?",
-  ng3p51 : "To the new dimension!",
-  ng3p52 : "Quantum doesn't take so long",
-  ng3p53 : "Gonna go fast",
-  ng3p54 : "We can really afford 9.",
-  ng3p55 : "Time Breaker",
-  ng3p56 : "Time Immunity",
-  ng3p57 : "You're not really smart.",
-  ng3p58 : "And so your life?",
-  ng3p61 : "Kee-hee-hee!",
-  ng3p62 : "Finite Time",
-  ng3p63 : "This achievement doesn't exist 4",
-  ng3p64 : "Really?",
-  ng3p65 : "But I don't want to grind!",
-  ng3p66 : "I rather oppose the theory of everything",
-  ng3p67 : "Will it be enough?",
-  ng3p68 : "Please answer me why you are dying.",
-  ng3p71 : "Progressing as a Ghost",
-  ng3p72 : "Underchallenged",
-  ng3p73 : "Meta-Infinity confirmed?",
-  ng3p74 : "Weak Decay",
-  ng3p75 : "Radioactive Decaying to the max!",
-  ng3p76 : "Running through Big Rips",
-  ng3p77 : "The Theory of Ultimate Studies",
-  ng3p78 : "Aren't you already dead?",
-  ng3p81 : "Even Ghostlier than before",
-  ng3p82 : "Overchallenged",
-  ng3p83 : "Pulling an All-Nighter",
-  ng3p84 : "Big Rip isn't enough",
-  ng3p85 : "Everlasting Eternities",
-  ng3p86 : "Back to Challenge One",
-  ng3p87 : "The Deep Challenge",
-  ng3p88 : "I give up.",
-  ng3p91 : "The Holy Particle",
-  ng3p92 : "Bright as the Anti-Sun",
-  ng3p93 : "Are these another...",
-  ng3p94 : "... references to EC8?",
-  ng3p95 : "Bosonic Semipowerment",
-  ng3p96 : "Not-so-very-challenging",
-  ng3p97 : "The Ghostliest Side",
-  ng3p98 : "Meta-Quintillion",
-  s11 : "The first one's always free",
-  s12 : "Just in case",
-  s13 : "It pays to have respect",
-  s14 : "So do I",
-  s15 : "Do a barrel roll!",
-  s16 : "Do you enjoy pain?",
-  s17 : "30 Lives",
-  s18 : "Do you feel lucky? Well do ya punk?",
-  s21 : "Go study in real life instead",
-  s22 : "Cancer = Spread",
-  s23 : "Stop right there criminal scum!",
-  s24 : "Real news",
-  s25 : "Shhh... It's a secret",
-  s26 : "You're a failure",
-  s27 : "It's not called matter dimensions is it?",
-  s28 : "Nice.",
-  s31 : "You should download some more RAM",
-  s32 : "Less than or equal to 0.001",
-  s33 : "A sound financial decision",
-  s34 : "You do know how these work, right?",
-  s35 : "Should we tell them about buy max...",
-  s36 : "While you were away... Nothing happened.",
-  s37 : "You followed the instructions",
-  s38 : "Professional bodybuilder",
-  ng3ps11 : "Blanked out",
-  ng3ps12 : "Lie the news",
-  ng3ps13 : "Two tickers",
-  ng3ps14 : "News for other species",
-  ng3ps15 : "Boo!",
-  ng3ps16 : "Up and Down and Up and Down...",
-  ng3ps17 : "Did you not understand the automation?",
-  ng3ps18 : "The Ultimate Challenge",
-  ng3ps21 : "The Forbidden Layer",
-  ng3ps22 : "400% Breaking News",
-  ng3ps23 : "keyboard broke?",
-  ng3ps24 : "Scared of ghosts?",
-  ng3ps25 : "This is NOT a clicker game!",
-  ng3ps26 : "Deny the afterlife",
-  ng3ps27 : "Revolution, when?",
-  ng3ps28 : "Prestige No-lifer"
+        r11 : "You gotta start somewhere",
+        r12 : "100 antimatter is a lot",
+        r13 : "Half life 3 confirmed",
+        r14 : "L4D: Left 4 Dimensions",
+        r15 : "5 Dimension Antimatter Punch",
+        r16 : "We couldn't afford 9",
+        r17 : "Not a luck related achievement",
+        r18 : "90 degrees to infinity",
+
+        r21 : "To infinity!",
+        r22 : "Fake News",
+        r23 : "The 9th Dimension is a lie",
+        r24 : "Antimatter Apocalypse",
+        r25 : "Boosting to the max",
+        r26 : "You got past The Big Wall",
+        r27 : "Double Galaxy",
+        r28 : "There's no point in doing that",
+
+        r31 : "I forgot to nerf that",
+        r32 : "The Gods are pleased",
+        r33 : "That's a lot of infinites",
+        r34 : "You didn't need it anyway",
+        r35 : "Don't you dare sleep",
+        r36 : "Claustrophobic",
+        r37 : "That's fast!",
+        r38 : "I don't believe in Gods",
+        
+        r41 : "Spreading Cancer",
+        r42 : "Supersanic",
+        r43 : "Zero Deaths",
+        r44 : "Over in 30 seconds",
+        r45 : "Faster than a potato",
+        r46 : "Multidimensional",
+        r47 : "Daredevil",
+        r48 : "AntiChallenged",
+
+        r51 : "Limit Break",
+        r52 : "Age of Automation",
+        r53 : "Definitely not worth it",
+        r54 : "That's faster!",
+        r55 : "Forever isn't that long",
+        r56 : "Many Deaths",
+        r57 : "Gift from the Gods",
+        r58 : "Is this hell?",
+
+        r61 : "Bulked up",
+        r62 : "Oh hey, you're still here",
+        r63 : "A new beginning.",
+        r64 : "1 million is a lot",
+        r65 : "Not-so-challenging",
+        r66 : "Faster than a squared potato",
+        r67 : "Infinitely Challenging",
+        r68 : "You did this again just for the achievement right?",
+
+        r71 : "ERROR 909: Dimension not found",
+        r72 : "Can't hold all these infinities",
+        r73 : "This achievement doesn't exist",
+        r74 : "End me",
+        r75 : "NEW DIMENSIONS???",
+        r76 : "One for each dimension",
+        r77 : "How the antitables have turned",
+        r78 : "Blink of an eye",
+
+        r81 : "Hevipelle did nothing wrong",
+        r82 : "Anti-antichallenged",
+        r83 : "YOU CAN GET 50 GALAXIES!??",
+        r84 : "I got a few to spare",
+        r85 : "All your IP are belong to us",
+        r86 : "Do you even bend time bro?",
+        r87 : "2 Million Infinities",
+        r88 : "Yet another infinity reference",
+
+        r91 : "Ludicrous Speed",
+        r92 : "I brake for nobody",
+        r93 : "MAXIMUM OVERDRIVE",
+        r94 : "Minute of infinity",
+        r95 : "Is this safe?",
+        r96 : "Time is relative",
+        r97 : "Yes. This is hell.",
+        r98 : "0 degrees from infinity",
+
+        r101 : "Costco sells dimboosts now",
+        r102 : "This mile took an Eternity",
+        r103 : "This achievement doesn't exist II",
+        r104 : "That wasn't an eternity",
+        r105 : "Infinite time",
+        r106 : "The swarm",
+        r107 : "Do you really need a guide for this?",
+        r108 : "We could afford 9",
+
+        r111 : "Yo dawg, I heard you liked infinities...",
+        r112 : "Never again",
+        r113 : "Long lasting relationship",
+        r114 : "You're a mistake",
+        r115 : "I wish I had gotten 7 eternities",
+        r116 : "Do I really need to infinity",
+        r117 : "8 nobody got time for that",
+        r118 : "IT'S OVER 9000",
+
+        r121 : "Can you get infinite IP?",
+        r122 : "You're already dead.",
+        r123 : "5 more eternities until the update",
+        r124 : "Eternities are the new infinity",
+        r125 : "Like feasting on a behind",
+        r126 : "Popular music",
+        r127 : "But I wanted another prestige layer...",
+        r128 : "What do I have to do to get rid of you",
+
+        r131 : "No ethical consumption",
+        r132 : "Unique snowflakes",
+        r133 : "I never liked this infinity stuff anyway",
+        r134 : "When will it be enough?",
+        r135 : "Faster than a potato^286078",
+        r136 : "I told you already, time is relative",
+        r137 : "Now you're thinking with dilation!",
+        r138 : "This is what I have to do to get rid of you.",
+
+        ngud11 : "A newer beginning.",
+        ngud12 : "1 million is still a lot",
+        ngud13 : "Time is absolute",
+        ngud14 : "Finally I'm out of that channel",
+        ngud16 : "We couldn't afford 5",
+        ngud18 : "I already got rid of you.",
+
+        ngpp11 : "I'm so meta", // NO REWARD
+        ngpp12 : "And still no ninth dimension...",
+        ngpp13 : "In the grim darkness of the far endgame",
+        ngpp14 : "Meta-boosting to the max",
+        ngpp15 : "The cap is a million, not a trillion",
+        ngpp16 : "It will never be enough",
+        ngpp17 : "GAS GAS GAS",
+        ngpp18 : "Universal harmony",
+
+        ng3p11 : "I don't have enough fuel!",
+        ng3p12 : "Sub-atomic",
+        ng3p13 : "Hadronization",
+        ng3p14 : "Work harder.", // NO REWARD
+        ng3p15 : "No more tax fraud!",
+        ng3p16 : "And the winner is...",
+        ng3p17 : "Old age",
+        ng3p18 : "I already got rid of you...",
+
+        ng3p21 : "Special Relativity",
+        ng3p22 : "We are not going squared.",
+        ng3p23 : "This achievement doesn't exist 3",
+        ng3p24 : "Old memories come true",
+        ng3p25 : "Twice in a row",
+        ng3p26 : "Infinity Morals",
+        ng3p27 : "Intergalactic",
+        ng3p28 : "Seriously, I already got rid of you.",
+
+        ng3p31 : "ERROR 500: INTERNAL DIMENSION ERROR",
+        ng3p32 : "The truth of anti-challenged", // NO REWARD
+        ng3p33 : "Never make paradoxes!",
+        ng3p34 : "The Challenging Day",
+        ng3p35 : "An ant office?",
+        ng3p36 : "I can’t get my multipliers higher!", // NO REWARD
+        ng3p37 : "No dilation means no production.",
+        ng3p38 : "I don't want you to live anymore.", // NO REWARD
+
+        ng3p41 : "Time is not relative",
+        ng3p42 : "ERROR 404: DIMENSIONS NOT FOUND", // NO REWARD
+        ng3p43 : "Impossible expectations",
+        ng3p44 : "Studies are wasted",
+        ng3p45 : "Do protons decay?",
+        ng3p46 : "Hardly marked",
+        ng3p47 : "Stop blocking me!",
+        ng3p48 : "Are you currently dying?",
+
+        ng3p51 : "To the new dimension!",
+        ng3p52 : "Quantum doesn't take so long",
+        ng3p53 : "Gonna go fast",
+        ng3p54 : "We can really afford 9.",
+        ng3p55 : "Time Breaker",
+        ng3p56 : "Time Immunity",
+        ng3p57 : "You're not really smart.",
+        ng3p58 : "And so your life?",
+
+        ng3p61 : "Kee-hee-hee!",
+        ng3p62 : "Finite Time",
+        ng3p63 : "This achievement doesn't exist 4",
+        ng3p64 : "Really?",
+        ng3p65 : "But I don't want to grind!",
+        ng3p66 : "I rather oppose the theory of everything",
+        ng3p67 : "Will it be enough?",
+        ng3p68 : "Please answer me why you are dying.",
+
+        ng3p71 : "Progressing as a Ghost",
+        ng3p72 : "Underchallenged",
+        ng3p73 : "Meta-Infinity confirmed?",
+        ng3p74 : "Weak Decay",
+        ng3p75 : "Radioactive Decaying to the max!",
+        ng3p76 : "Running through Big Rips",
+        ng3p77 : "The Theory of Ultimate Studies",
+        ng3p78 : "Aren't you already dead?",
+
+        ng3p81 : "Even Ghostlier than before",
+        ng3p82 : "Overchallenged",
+        ng3p83 : "Pulling an All-Nighter",
+        ng3p84 : "Big Rip isn't enough",
+        ng3p85 : "Everlasting Eternities",
+        ng3p86 : "Back to Challenge One",
+        ng3p87 : "The Deep Challenge",
+        ng3p88 : "I give up.",
+
+        ng3p91 : "The Holy Particle",
+        ng3p92 : "Bright as the Anti-Sun",
+        ng3p93 : "Are these another...",
+        ng3p94 : "... references to EC8?",
+        ng3p95 : "Bosonic Semipowerment",
+        ng3p96 : "Not-so-very-challenging",
+        ng3p97 : "The Ghostliest Side",
+        ng3p98 : "Meta-Quintillion",
+
+        ng3p101 : "The Power of Relativity",
+        ng3p102 : "The Forbidden Challenge",
+        ng3p103 : "Einstein's Ghost",
+        ng3p104 : "Gigafield",
+        ng3p105 : "X-Ranked",
+        ng3p106 : "Do you even how to?",
+        ng3p107 : "Brutally Challenging",  // NO REWARD
+        ng3p108 : "Auto-Ghost Speedrunning",  // NO REWARD
+
+        ng3p111 : "Quantum Scality",
+        ng3p112 : "Infinitely Massive",
+        ng3p113 : "Replicated Universes",
+        ng3p114 : "The Supervoid",
+        ng3p115 : "Truly Dilating Time",
+        ng3p116 : "Spectre Prisms",
+        ng3p117 : "Universe Immortality",
+        ng3p118 : "Chaos, Chaos, Chaos!",
+
+
+        s11 : "The first one's always free",
+        s12 : "Just in case",
+        s13 : "It pays to have respect",
+        s14 : "So do I",
+        s15 : "Do a barrel roll!",
+        s16 : "Do you enjoy pain?",
+        s17 : "30 Lives",
+        s18 : "Do you feel lucky? Well do ya punk?",
+
+        s21 : "Go study in real life instead",
+        s22 : "Cancer = Spread",
+        s23 : "Stop right there criminal scum!",
+        s24 : "Real news",
+        s25 : "Shhh... It's a secret",
+        s26 : "You're a failure",
+        s27 : "It's not called matter dimensions is it?",
+        s28 : "Nice.",
+
+        s31 : "You should download some more RAM",
+        s32 : "Less than or equal to 0.001",
+        s33 : "A sound financial decision",
+        s34 : "You do know how these work, right?",
+        s35 : "Should we tell them about buy max...",
+        s36 : "While you were away... Nothing happened.",
+        s37 : "You followed the instructions",
+        s38 : "Professional bodybuilder",
+        
+        ng3ps11 : "Blanked out",
+        ng3ps12 : "Lie the news",
+        ng3ps13 : "Two tickers",
+        ng3ps14 : "News for other species",
+        ng3ps15 : "Boo!",
+        ng3ps16 : "Up and Down and Up and Down...",
+        ng3ps17 : "Did you not understand the automation?",
+        ng3ps18 : "The Ultimate Challenge",
+        ng3ps21 : "The Forbidden Layer",
+        ng3ps22 : "400% Breaking News",
+        ng3ps23 : "keyboard broke?",
+        ng3ps24 : "Scared of ghosts?",
+        ng3ps25 : "This is NOT a clicker game!",
+        ng3ps26 : "Deny the afterlife",
+        ng3ps27 : "Revolution, when?",
+        ng3ps28 : "Prestige No-lifer"
 };
 const secretAchievementTooltips = {
 	s11 : "Click on this achievement.",
@@ -305,6 +351,10 @@ function giveAchievement(name, noUpdate) {
 
 	if (player.achievements.includes(allAchievementNums[name])) return false
 
+        if (allAchievementNums[name] == undefined) {
+                console.log(name)
+        }
+
 	var ngudAchId = allAchievementNums[name].split("ngud")[1]
 	if (ngudAchId != undefined) if (player.exdilation == undefined) return
 
@@ -351,27 +401,31 @@ function giveAchievement(name, noUpdate) {
 		updateAutoEterMode()
 		loadAutoBuyerSettings()
 	}
-	if (name == "Kee-hee-hee!" && (player.achievements.includes("ng3p18") || player.achievements.includes("ng3p37"))) {
-                setAndMaybeShow('bestTPOverGhostifies', true, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
-                if (!tmp.ngp3l) {
-                        dev.giveAllNGAchievements()
-                        for (let i = 1; i <= 8; i++){
-                                if (!player.achievements.includes("ngpp1" + i)) player.achievements.push("ngpp1" + i)
-                                if (!player.achievements.includes("ng3p1" + i)) player.achievements.push("ng3p1" + i)
-                                if (!player.achievements.includes("ng3p2" + i)) player.achievements.push("ng3p2" + i)
-                        }
-                }
-        }
-        if (name == "Even Ghostlier than before") {
-                if (!tmp.ngp3l) {
-                        for (let i = 1; i <= 8; i++){
-                                if (!player.achievements.includes("ng3p3" + i)) player.achievements.push("ng3p3" + i)
-                                if (!player.achievements.includes("ng3p4" + i)) player.achievements.push("ng3p4" + i)
-                                if (!player.achievements.includes("ng3p5" + i)) player.achievements.push("ng3p5" + i)
-                                if (!player.achievements.includes("ng3p6" + i)) player.achievements.push("ng3p6" + i)
-                        }
-                }
-        }
+	if (name == "Kee-hee-hee!") {
+		setAndMaybeShow('bestTPOverGhostifies', true, '"Your best-ever Tachyon particles was "+shorten(player.dilation.bestTPOverGhostifies)+"."')
+		dev.giveAllNGAchievements()
+		for (let i = 1; i <= 8; i++){
+			if (!player.achievements.includes("ngpp1" + i)) player.achievements.push("ngpp1" + i)
+			if (!player.achievements.includes("ng3p1" + i)) player.achievements.push("ng3p1" + i)
+			if (!player.achievements.includes("ng3p2" + i)) player.achievements.push("ng3p2" + i)
+		}
+	}
+	if (name == "I rather to oppose the theory of everything") document.getElementById('autoDisableQuantum').style.display = ""
+	if (name == "Even Ghostlier than before") {
+		for (let i = 1; i <= 8; i++){
+			if (!player.achievements.includes("ng3p3" + i)) player.achievements.push("ng3p3" + i)
+			if (!player.achievements.includes("ng3p4" + i)) player.achievements.push("ng3p4" + i)
+			if (!player.achievements.includes("ng3p5" + i)) player.achievements.push("ng3p5" + i)
+			if (!player.achievements.includes("ng3p6" + i)) player.achievements.push("ng3p6" + i)
+		}
+	}
+	if (name == "The Power of Relativity") {
+		for (let i = 1; i <= 8; i++){
+			if (!player.achievements.includes("ng3p7" + i)) player.achievements.push("ng3p7" + i)
+			if (!player.achievements.includes("ng3p8" + i)) player.achievements.push("ng3p8" + i)
+		}
+		updateBosonicLimits()
+	}
 	if (name == "Bright as the Anti-Sun" && !tmp.bl.upgrades.includes(32)) tmp.bl.upgrades.push(32)
 	if (name == "... references to EC8?") updateTODStuff()
 	if (name == "Not-so-very-challenging") updateQuantumChallenges()
@@ -386,14 +440,14 @@ function updateAchievements() {
 	var amount = 0
 	var rowsShown = 0
 	var rowsNum = 0
-	for (var i = 1; i < 25; i++) {
+	for (var i = 1; i <= 26; i++) {
 		var shown=true
 		var rowid = i
 		var rownum = i
 		if (i > 15) {
 			shown =! (!player.masterystudies)
 			rownum = i - 15
-			if (rownum > 8) shown = shown && !tmp.ngp3l
+			if (rownum > 8) shown = shown
 			rowid = "ng3p" + rownum
 		} else if (i > 14) {
 			shown = player.meta
@@ -449,7 +503,7 @@ function updateAchievements() {
 		}
 	}
     player.achPow = Decimal.pow(player.aarexModifications.newGameMinusMinusVersion ? 5 : 1.5, amount)
-    document.getElementById("achmultlabel").textContent = "Current achievement multiplier on each " + achMultLabelUpdate() + " Dimension: " + shortenMoney(player.achPow) + "x"
+    document.getElementById("achmultlabel").textContent = "Current achievement multiplier on " + achMultLabelUpdate() + " Dimensions: " + shortenMoney(player.achPow) + "x"
 	document.getElementById("nothingness").style.display = rowsShown ? "none" : ""
 
 	rowsShown = 0
@@ -459,7 +513,7 @@ function updateAchievements() {
 		var rowid = "secretAchRow" + i
 		if (i > 3) {
 			shown = tmp.ngp3
-			if (shown && i > 4) shown = !tmp.ngp3l
+			if (shown && i > 4) shown = true
 			rowid = "secretAchRowng3p" + (i - 3)
 		}
 		var n = 0
@@ -546,20 +600,28 @@ function toggleSecretAchs() {
 }
 
 function achMultLabelUpdate() {
-        var label = "Normal"
-        if (player.achievements.includes("r75")) label += "/Infinity"
-        if (player.eternityUpgrades.includes(4)) label += "/Time"
-        return label
+        var labels = []
+        if (player.achievements.includes("r72") && player.aarexModifications.ngmX >= 4) labels.push("Galaxy Points")
+	labels.push("Normal")
+	if (player.achievements.includes("r75")) labels.push("Infinity")
+	if (player.eternityUpgrades.includes(4)) labels.push("Time")
+	return wordizeList(labels)
 }
 
 function metaAchMultLabelUpdate() {
-    if (!tmp.ngp3) {
-        document.getElementById("metaAchMultLabel").style.display = "none"
-        return
-    }
-    var metaMult = (tmp.qcRewards ? tmp.qcRewards[6] : 1)
-    if (tmp.qu.challenges[6] > 0) {
-        document.getElementById("metaAchMultLabel").style.display = "inline-block"
-        document.getElementById("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(metaMult) + "x"
-    } else document.getElementById("metaAchMultLabel").style.display = "none"
+	if (!isQCRewardActive(6)) {
+		document.getElementById("metaAchMultLabel").style.display = "none"
+		return
+	}
+	document.getElementById("metaAchMultLabel").style.display = ""
+	document.getElementById("metaAchMultLabel").textContent = "Achievement multiplier to Meta Dimensions: " + shorten(tmp.qcRewards[6]) + "x"
+}
+
+function bWtAchMultLabelUpdate() {
+	if (!player.achievements.includes("ng3p91")) {
+		document.getElementById("bWtAchMultLabel").style.display = "none"
+		return
+	}
+	document.getElementById("bWtAchMultLabel").style.display = ""
+	document.getElementById("bWtAchMultLabel").textContent = "Achievement multiplier to Bosonic Watts: " + shorten(getAchBWtMult()) + "x"
 }

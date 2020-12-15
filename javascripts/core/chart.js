@@ -129,3 +129,70 @@ function addData(chart, label, data) {
     if (document.getElementById("antimatterdimensions").style.display == "block" && document.getElementById("production").style.display == "block") chart.update(100);
     else chart.update(0);
 }
+
+
+Chart.defaults.global.defaultFontColor = 'black';
+Chart.defaults.global.defaultFontFamily = 'Typewriter';
+var ctx2 = document.getElementById("normalDimChart").getContext('2d');
+var normalDimChart = new Chart(ctx2, {
+	type: 'line',
+	data: {
+		labels: [],
+		datasets: [{
+			label: ['Exponents of antimatter per second'],
+			data: [],
+			backgroundColor: ['rgba(0,0,0,1)'],
+			borderColor: ['rgba(0,0,0,1)'],
+			fill: false,
+			lineTension: 0.1,
+			borderWidth: 3,
+			pointRadius: 0,
+			pointBorderWidth: 0,
+			pointHoverRadius: 0
+		}]
+	},
+	options: {
+		tooltips: {enabled: false},
+		hover: {mode: null},
+		legend: {
+			display: false,
+			labels: {
+				boxWidth: 0
+			}
+		},
+		scales: {
+			yAxes: [{
+				ticks: {
+					max: 100000000,
+					min: 1
+				}
+			}],
+			xAxes: [{
+				gridLines: {
+					display: false,
+					drawTicks: false
+				},
+				ticks: { fontSize: 0}
+			}]
+		},
+		layout: {padding: {top: 10}}
+	}
+});
+
+function updateChartValues() {
+	player.options.chart.duration = Math.min(Math.max(parseInt(document.getElementById("chartDurationInput").value), 1), 300);
+	document.getElementById("chartDurationInput").value = player.options.chart.duration;
+	player.options.chart.updateRate = Math.min(Math.max(parseInt(document.getElementById("chartUpdateRateInput").value), 50), 10000);
+	document.getElementById("chartUpdateRateInput").value = player.options.chart.updateRate;
+	if (Number.isInteger(player.options.chart.updateRate) === false) {
+		player.options.chart.updateRate = 1000;
+	}
+	if ((player.options.chart.updateRate <= 200 && player.options.chart.duration >= 30) && player.options.chart.warning === 0) {
+		alert("Warning: Setting the duration and update rate to more demanding values can cause performance issues.");
+		player.options.chart.warning = 1;
+	}
+	if (player.options.chart.duration / player.options.chart.updateRate * 1000 >= 1000 && player.options.chart.warning !== 2) {
+		alert("Warning: You have set the duration and update rate quite high, make sure you know what you're doing or have a good computer before using the chart.");
+		player.options.chart.warning = 2;
+	}
+}

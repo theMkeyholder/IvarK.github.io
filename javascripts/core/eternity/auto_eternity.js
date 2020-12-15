@@ -21,6 +21,9 @@ function updateAutoEterMode() {
 	} else if (player.autoEterMode == "eternitied") {
 		modeText = "X times eternitied"
 		modeCond = modeText + ":"
+	} else if (player.autoEterMode == "exponent") {
+		modeText = "Power-Raising"
+		modeCond = "Wait until your gain reaches ^x of total eternities: "
 	} else if (player.autoEterMode == "manual") {
 		modeText = "dilate only"
 		modeCond = "Does nothing to eternity"
@@ -45,7 +48,8 @@ function toggleAutoEterMode() {
 	else if (player.autoEterMode == "relativebest" && player.dilation.upgrades.includes("ngpp3") && getEternitied() >= 4e11 && player.aarexModifications.newGame3PlusVersion) player.autoEterMode = "replicanti"
 	else if (player.autoEterMode == "replicanti" && getEternitied() >= 1e13) player.autoEterMode = "peak"
 	else if (player.autoEterMode == "peak" && player.achievements.includes("ng3p51")) player.autoEterMode = "eternitied"
-	else if ((player.autoEterMode == "peak" || player.autoEterMode == "eternitied") && speedrunMilestonesReached > 24) player.autoEterMode = "manual"
+	else if (player.autoEterMode == "eternitied") player.autoEterMode = "exponent"
+	else if ((player.autoEterMode == "peak" || player.autoEterMode == "exponent") && speedrunMilestonesReached > 24) player.autoEterMode = "manual"
 	else if (player.autoEterMode) player.autoEterMode = "amount"
 	updateAutoEterMode()
 }

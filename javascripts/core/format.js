@@ -22,7 +22,7 @@ function getAbbreviation(e) {
                 ['', 'Ce', 'Dn', 'Tc', 'Qe', 'Qu', 'Sc', 'Si', 'Oe', 'Ne']]
         const prefixes2 = ['', 'MI', 'MC', 'NA']
 	var result = ''
-        e = Math.floor(e / 3)-1;
+    e = Math.floor(e / 3) - 1;
 	e2 = 0
         while (e > 0) {		
 		var partE = e % 1000
@@ -659,12 +659,13 @@ function iroha (n, depth) {
   return iroha_special[prefix(num)] + (rec.eq(1) ? '' : iroha(rec, depth - 1));
 }
 
+let FORMAT_INTS_DIFFERENTLY = ["Greek", "Morse code", "Symbols", "Lines", "Simplified Written"]
 function getFullExpansion(num) {
 	if (num === null) return "NaN"
 	if (isNaN(num)) return "NaN"
 	if (!break_infinity_js && typeof(num) != "number") if (isNaN(num.logarithm)) return "NaN"
 	if (num > 1e12) return shorten(num)
-	if (player.options.notation === "Greek" || player.options.notation === "Morse code" || player.options.notation === "Symbols" || player.options.notation === "Lines" || player.options.notation === "Simplified Written") return convTo(player.options.notation, num)
+	if (FORMAT_INTS_DIFFERENTLY.includes(player.options.notation)) return convTo(player.options.notation, num)
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
@@ -721,27 +722,45 @@ function preformat(int) {
   else return int
 }
 
-let small = ['', 'm', 'μ', 'n', 'p', 'f', 'a', 'z', 'y']
+let small = ['', 'm', 'μ', 'n', 'p', 'f', 'a', 'z', 'y', 'r', 'q']
+let plTime = 5.391247e-44
+
 function timeDisplayShort(time, rep, places) {
 	if (Decimal.gt(time, Number.MAX_VALUE)) {
 		if (Decimal.eq(time, 1 / 0)) return 'eternity'
-		return shorten(Decimal.div(time, 31536e4)) + 'y'
+		return shorten(Decimal.div(time, 31556952e101)) + ' ae'
 	}
 	time = time / 10
-	if (rep && time < 1) {
-		if (Decimal.lt(time, Number.MIN_VALUE)) return "1/" + formatValue(player.options.notation, Decimal.div(10, time), places, 0)+"s"
-		if (time < 1e-24) return "1/" + formatValue(player.options.notation, 1 / time, places, 0)+"s"
-		if (time < 0.01) {
-			var log = Math.ceil(-Math.log10(time))
-			return (time * Math.pow(1e3, Math.ceil(log / 3))).toFixed(Math.max(places + (log - 1) % 3 - 2, 0)) + " " + small[Math.ceil(log / 3)] + "s"
+	if (rep && time > 0 && time < 1) {
+		let log
+		let timeNum = time
+		if (time + 0 !== time) {
+			log = time.log10()
+			timeNum = time.toNumber()
+		} else log = Math.log10(time)
+
+		if (log < Math.log10(plTime)) return "1 / " + formatValue(player.options.notation, Decimal.div(1, time), places, 0) + " s"
+		if (log < -30) return formatValue(player.options.notation, Decimal.div(time, plTime), places, 0) + "tP" //1 tP = 1 Planck Time
+		if (log < -2) {
+			log = Math.ceil(-log)
+			return (timeNum * Math.pow(1e3, Math.ceil(log / 3))).toFixed(Math.max(places + (log - 1) % 3 - 2, 0)) + " " + small[Math.ceil(log / 3)] + "s"
 		}
-		return (time * 100).toFixed(time < 0.1 ? places : places - 1) + " cs"
+		return (timeNum * 100).toFixed(time < 0.1 ? places : places - 1) + " cs"
 	}
 	if (time < 60) return time.toFixed(time < 10 ? places : places - 1) + " s" + (rep ? "" : "econds")
 	if (time < 3600) return Math.floor(time / 60) + ":" + preformat(Math.floor(time % 60))
 	if (time < 86400) return Math.floor(time / 3600) + ":" + preformat(Math.floor((time/60) % 60)) + ":" + preformat(Math.floor(time % 60))
-	if (time < 31556952 && rep) return Math.floor(time / 86400) + 'd & ' + ((time/3600) % 24).toFixed(1) + "h"
-	if (time < 31556952) return Math.floor(time / 86400) + 'd & ' + Math.floor((time/3600) % 24) + ":" + preformat(Math.floor((time / 60) % 60)) + ":" + preformat(Math.floor(time % 60))
-	if (time < 315569520) return Math.floor(time / 31536e3) + 'y & ' + ((time / 86400) % 365.2425).toFixed(1) + 'd'
-	return shorten(time / 31536e3) + 'y'
+	if (time < 31556952 && rep) return Math.floor(time / 86400) + ' d & ' + ((time/3600) % 24).toFixed(1) + " h"
+	if (time < 31556952) return Math.floor(time / 86400) + ' d & ' + Math.floor((time/3600) % 24) + ":" + preformat(Math.floor((time / 60) % 60)) + ":" + preformat(Math.floor(time % 60))
+	if (time < 315569520) return Math.floor(time / 31556952) + ' y & ' + ((time / 86400) % 365.2425).toFixed(1) + ' d'
+	if (time < 31556952e100) return shorten(time / 315569520) + ' y'
+	return shorten(time / 31556952e100) + ' ae' //1 ae = 1 aeon = Estimated lifespan of a observable universe = e100 years
+}
+
+function formatPercentage(x, digits = 1) {
+	x *= 100
+
+	let n = x.toFixed(digits)
+	if (parseFloat(n) < 1e3 && !FORMAT_INTS_DIFFERENTLY.includes(player.options.notation)) return n
+	return getFullExpansion(Math.round(x))
 }

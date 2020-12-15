@@ -1,0 +1,60 @@
+body {
+	background: #000f1f
+}
+
+.container, div, b, input {
+	color: #bfdfff;
+    font-family: 'IBM Plex Mono', monospace !important
+}
+
+button, .optionstab td div {
+	border-radius: 25% !important;
+	box-shadow: inset -3px -3px 3px rgba(0, 0, 0, 0.25);
+    font-family: 'IBM Plex Mono', monospace !important
+}
+
+button:hover {
+	transform: scale(1.1);
+	box-shadow: inset -3px -3px 3px rgba(0, 0, 0, 0.25), 0px 0px 12px white
+}
+
+.tabbtn {
+	background: linear-gradient(#bfdfff, #bfbfff) !important;
+	border-color: transparent rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.25) !important;
+	color: #000f1f !important
+}
+
+.secondarytabbtn {
+	background: linear-gradient(#dfefff, #dfdfff) !important;
+	border-color: transparent rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.25) !important;
+	color: #000f1f !important
+}
+
+.storebtn {
+	background: linear-gradient(#bfff7f, #7fff7f) !important;
+	border-color: transparent rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.25) !important;
+	color: #000f1f !important
+}
+
+.unavailablebtn {
+	transform: scale(1) !important;
+	background: linear-gradient(#9f8f7f, #9f7f7f) !important;
+	border-color: transparent rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.25) !important;
+	box-shadow: inset -3px -3px 3px rgba(0, 0, 0, 0.25) !important;
+	color: #000f1f !important
+}
+
+.popup {
+	background: linear-gradient(#dfefff, #dfdfff) !important;
+	border-color: transparent rgba(0, 0, 0, 0.25) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.25) !important;
+	box-shadow: inset -3px -3px 3px rgba(0, 0, 0, 0.25);
+	color: #000f1f !important
+}
+
+.optionstab td div b, .popup div, .popup span, .popup b {
+	color: #000f1f !important
+}
+
+#coinAmount {
+	color: #007fff !important
+}

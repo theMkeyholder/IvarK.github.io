@@ -75,3 +75,28 @@ function divideTickspeedIC5() {
 	player.tickspeed = player.tickspeed.div(Decimal.pow(2, Math.pow(player.tickspeedBoosts, 1.5)))
 }
 
+function getInitPostC3Power(){
+	var ic3Power = player.totalTickGained * getECReward(14)
+	if (player.tickspeedBoosts != undefined && player.currentChallenge != "postc5") {
+		let mult = 30
+		if ((inNC(14) && player.aarexModifications.ngmX == 3) || player.currentChallenge == "postcngm3_3") mult = 20
+		else if (player.galacticSacrifice.upgrades.includes(14)) mult = 32
+		if (inNC(6, 1)) mult *= Math.min(player.galaxies / 30, 1)
+		let ic3PowerTB = player.tickspeedBoosts * mult
+		let softCapStart = 1024
+		let frac = 8
+		if (player.currentChallenge=="postcngm3_1" || player.currentChallenge=="postc1") softCapStart = 0
+		if (player.challenges.includes("postcngm3_1")) frac = 7
+		if (ic3PowerTB > softCapStart) ic3PowerTB = Math.sqrt((ic3PowerTB - softCapStart) / frac + 1024) * 32 + softCapStart - 1024
+		if (inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") ic3PowerTB *= player.aarexModifications.ngmX > 3 ? .2 : Math.max(player.galacticSacrifice.galaxyPoints.div(1e3).add(1).log(8),1)
+		else if (player.challenges.includes("postcngm3_3")) ic3PowerTB *= Math.max(Math.sqrt(player.galacticSacrifice.galaxyPoints.max(1).log10()) / 15 + .6, 1)
+		if (player.achievements.includes("r67")) {
+			let x = tmp.cp
+			if (x > 4) x = Math.sqrt(x - 1) + 2
+			ic3PowerTB *= x * .15 + 1
+		}
+		ic3Power += ic3PowerTB
+	}
+	if ((inNC(15) || player.currentChallenge == "postc1" || player.currentChallenge == "postcngm3_3") && player.aarexModifications.ngmX > 3) ic3Power -= (player.resets + player.tdBoosts) * 10
+	return ic3Power
+}

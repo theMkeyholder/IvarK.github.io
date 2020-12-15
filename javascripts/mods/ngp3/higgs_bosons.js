@@ -8,9 +8,6 @@ function setupHiggsSave() {
 }
 
 function unlockHiggs() {
-	if (tmp.ngp3l) { // higgs isn't a thing in legacy mode
-		return
-	} 
 	if (player.ghostify.hb.unl) return
 	if (!player.ghostify.wzb.unl) return
 	if (!canUnlockHiggs()) return
@@ -20,27 +17,27 @@ function unlockHiggs() {
 }
 
 function canUnlockHiggs() {
-	return player.money.gte(Decimal.pow(10, 2e17)) && player.ghostify.bl.am.gte(getHiggsRequirement()) && !tmp.ngp3l
+	return player.money.gte(Decimal.pow(10, 2e17)) && player.ghostify.bl.am.gte(getHiggsRequirement())
 }
 
 function updateHiggsUnlocks() {
-	if (tmp.ngp3l) {
-		document.getElementById("nextParticle").style.display = "none"
-		document.getElementById("bosonicResets").style.display = "none"
-		return
-	}
 	let unl = player.ghostify.hb.unl
-	document.getElementById("nextParticle").style.display = unl ? "none" : ""
-	document.getElementById("bosonicResets").style.display = unl ? "" : "none"
-	if (!unl) updateHiggsUnlockDisplay()
+	getEl("bosonicResets").style.display = unl ? "" : "none"
+	updateBosonUnlockDisplay()
 }
 
-function updateHiggsUnlockDisplay() {
-	document.getElementById("nextParticle").textContent = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(Decimal.pow(10, 2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
+function updateBosonUnlockDisplay() {
+	let txt = ""
+	if (!player.ghostify.hb.unl) txt = "To unlock the next particle (Higgs Bosons), you need to get " + shortenCosts(Decimal.pow(10, 2e17)) + " antimatter and " + shortenCosts(getHiggsRequirement()) + " Bosonic Antimatter first."
+	else if (!GDs.unlocked()) txt = "To unlock the next type of Dimensions (Gravity Dimensions), which contains Gravitons, you need to get " + GDs.reqText() + " first."
+
+	getEl("nextParticle").textContent = txt
 }
 
 function bosonicLabReset() {
-	delete tmp.qu.nanofield.apgWoke
+	let startingEnchants = tmp.bEn[14] ? tmp.bEn[14].bUpgs : 0
+	let oldUpgs = tmp.bl.upgrades
+
 	player.ghostify.neutrinos.electron = new Decimal(0)
 	player.ghostify.neutrinos.mu = new Decimal(0)
 	player.ghostify.neutrinos.tau = new Decimal(0)
@@ -49,11 +46,10 @@ function bosonicLabReset() {
 	player.ghostify.ghostlyPhotons.ghostlyRays = new Decimal(0)
 	player.ghostify.ghostlyPhotons.lights = [0,0,0,0,0,0,0,0]
 	tmp.updateLights = true
-	var startingEnchants = tmp.bEn[14] ? tmp.bEn[14].bUpgs : 0
 	player.ghostify.bl = {
 		watt: new Decimal(0),
 		ticks: player.ghostify.bl.ticks,
-		speed: 0,
+		speed: new Decimal(0),
 		am: new Decimal(0),
 		typeToExtract: player.ghostify.bl.typeToExtract,
 		extracting: false,
@@ -61,19 +57,11 @@ function bosonicLabReset() {
 		autoExtract: new Decimal(0),
 		glyphs: [],
 		enchants: {},
-		usedEnchants: [],
-		upgrades: [],
+		usedEnchants: tmp.bl.usedEnchants,
+		upgrades: player.achievements.includes("ng3p104") ? oldUpgs : [],
 		battery: new Decimal(0),
 		odSpeed: player.ghostify.bl.odSpeed
 	}
-	var order = [11, 12, 13, 15, 14, 21, 22, 23, 24, 25, 31, 32, 33, 34, 35, 41, 42, 43, 44, 45]
-	//tmp.bl.upgrades needs to be updated (also 12 needs to be added)
-	for (let i = 0; i < startingEnchants; i++){
-		if (i == 20) break
-		player.ghostify.bl.upgrades.push(order[i])
-	}
-	if (!player.ghostify.bl.upgrades.includes(32) && player.achievements.includes("ng3p92")) player.ghostify.bl.upgrades.push(32)
-	for (var g = 1; g <= br.maxLimit; g++) player.ghostify.bl.glyphs.push(new Decimal(0))
 	player.ghostify.wzb = {
 		unl: true,
 		dP: new Decimal(0),
@@ -87,39 +75,55 @@ function bosonicLabReset() {
 		wnb: new Decimal(0),
 		zb: new Decimal(0)
 	}
-	updateBosonicAMDimReturnsTemp()
+	delete tmp.qu.nanofield.apgWoke
+
+	for (let g = 1; g <= br.limits[maxBLLvl]; g++) player.ghostify.bl.glyphs.push(new Decimal(0))
+	if (!player.achievements.includes("ng3p104")) {
+		let order = [11, 12, 13, 15, 14, 21, 22, 23, 24, 25, 31, 32, 33, 34, 35, 41, 42, 43, 44, 45]
+		for (let i = 0; i < startingEnchants; i++) {
+			if (i == order.length) break //this needs to make sure that it doesnt give you upgrades you havent unlocked yet
+			player.ghostify.bl.upgrades.push(order[i])
+		}
+		if (oldUpgs.includes(32) && player.achievements.includes("ng3p92")) player.ghostify.bl.upgrades.push(32)
+	}
+
+	if (player.achievements.includes("ng3p98")) {
+		player.ghostify.wzb.wpb = Decimal.pow(3, player.ghostify.hb.higgs)
+		player.ghostify.wzb.zb = Decimal.pow(9, player.ghostify.hb.higgs)
+	}
+
 	ghostify(false, true)
+	GDs.dimReset()
+
+	player.ghostify.hb.bosonicSemipowerment = true
+	updateBosonicAMDimReturnsTemp()
 	matchTempPlayerHiggs()
 }
 
-function higgsReset() {
-	if (tmp.ngp3l) return
-	var oldHiggs = player.ghostify.hb.higgs
+function higgsReset(auto) {
+	let oldHiggs = player.ghostify.hb.higgs
+	let resetNothing = pl.on() && player.achievements.includes("ng3p112")
 	if (!player.ghostify.bl.am.gte(getHiggsRequirement())) return
-	if (!player.aarexModifications.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
+	if (!auto && !resetNothing && !player.aarexModifications.higgsNoConf && !confirm("You will exchange all your Bosonic Lab stuff for Higgs Bosons. Everything that Light Empowerments resets initally will be reset. Are you ready to proceed?")) return
 	addHiggs(getHiggsGain())
-	bosonicLabReset()
+	if (!resetNothing) bosonicLabReset()
 	if (oldHiggs == 0) {
 		updateNeutrinoBoosts()
 		updateHiggsUnlocks()
 		updateBosonicLimits()
 		updateBosonicStuffCosts()
 	}
-	player.ghostify.hb.bosonicSemipowerment = true
-	matchTempPlayerHiggs()
 }
 
 function restartHiggs() {
 	if (!confirm("Restarting will act as a Higgs reset, but you won't gain anything. Are you sure you want to restart?")) return
 	bosonicLabReset()
-	player.ghostify.hb.bosonicSemipowerment = true
-	matchTempPlayerHiggs()
 }
 
 function getHiggsRequirementBase() {
 	var div = new Decimal(1)
-	if (player.ghostify.bl.usedEnchants.includes(14)) div = div.times(tmp.bEn[14].higgs || 1)
-	return new Decimal(1e20).divide(div)
+	if (isEnchantUsed(14)) div = div.times(tmp.bEn[14].higgs || 1)
+	return Decimal.div(1e18, div)
 }
 
 function getHiggsRequirementMult() {
@@ -139,6 +143,7 @@ function getHiggsGain() {
 
 function addHiggs(x) {
 	player.ghostify.hb.higgs += x
+	if (GDs.unlocked()) GDs.getExtraGDBs()
 }
 
 function matchTempPlayerHiggs(){

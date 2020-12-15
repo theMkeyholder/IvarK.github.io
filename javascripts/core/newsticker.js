@@ -210,6 +210,8 @@ newsArray = [//always true
 //missable / pay req
 ["How dare you actually get zero deaths on a first run?", 'player.achievements.includes("r43") && player.infinitied == 1 && player.eternities == 0', "s1"],
 ["Legend says the ninth dimension is supposed to be found here, but I don't see anything.", "player.money.e >= 41900 && !player.replicanti.unl && player.eternities == 0", "s2"],
+]
+amNewsArray = [
 //Aarex's Modifications
 ["A brave man tried NG- and NG-- modes at the same time, but he will be dead before he would complete this mode.", 'player.aarexModifications.newGameMinusVersion && player.galacticSacrifice', "am1"],
 ["You would be dead if you started writing down your antimatter amount", 'player.money.gt(Decimal.pow(10, 3 * 86400 * 365.2425 * 79.3 / 10))', "am2"],
@@ -248,8 +250,8 @@ newsArray = [//always true
 ["BREAKING NEWS: wAFFLE found a game-breaking bug that I have to release a new update to beat him!", "player.masterystudies", "am36"],
 ["", true, "am37"],
 ["Because Article 13 was passed, this mod will be blocked in European Union soon.", true, "am38"],
-["Quantum is just Eternity but with quarks.", "quantumed", "am39"],
-["Don't use antimatter anti-aging cream. You'll find yourself wondering how you got to be 873 eternities old.", "(player.eternities > 872 || quantumed)", "am40"],
+["Quantum is just Eternity but with quarks.", "ph.did('quantum')", "am39"],
+["Don't use antimatter anti-aging cream. You'll find yourself wondering how you got to be 873 eternities old.", "(player.eternities > 872 || ph.did('quantum'))", "am40"],
 ["Defeat antimatter to gain quarks!", "player.masterystudies !== undefined", "am41"],
 ["Oh no! Someone beat my antimatter amount! I was going to develop a side project, but I must catch up!", "player.masterystudies !== undefined", "am42"],
 ["Ghostify means Ghostify. It's actually a prestige layer.", "player.masterystudies !== undefined", "am43"],
@@ -259,7 +261,7 @@ newsArray = [//always true
 ["Soon(TM)", "(player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 155887875)) : false)", "am48"],
 ["Reality actually contains everything (including celestials).", "player.masterystudies !== undefined", "am49"],
 ["New prestige layer coming soon, Police-ize! When you prestige, you unlock officer dimensions. They behave like all other dimensions except they produce anti-anti-antimatter. This anti-anti-antimatter can be used to purchase more officer dimensions. The anti-anti-antimatter also makes your galaxies feel more safer, providing a boost in galaxy efficiency, based on your highest reached AAAM.", "player.masterystudies !== undefined", "am50"],
-['"THERE WILL BE NO NG+4. NG+3 ALWAYS HAVE UPDATES." - Aarex', "ghostified", "am51"],
+['"THERE WILL BE NO NG+4. NG+3 ALWAYS HAVE UPDATES." - Aarex', "ph.did('ghostify')", "am51"],
 ["No. You are not really at current end-game.", "(player.masterystudies !== undefined ? player.quantum.bigRip.bestAntimatter.gte(Decimal.pow(10, 1e9)) : false)", "am52"],
 ["Congratulations for beating NG+3! (for now...) A secret is unlocked in Ghostly News Ticker...", "player.totalmoney.gte(Decimal.pow(10, 2e17))", "am53"],
 ["You're reading news too much.", "player.newsArray.length >= 215", "am54"],
@@ -268,7 +270,7 @@ newsArray = [//always true
 ["You know, you should really turn off the news ticker.", "player.newsArray.length >= 260", "am57"],
 ["What's next? NG++++?", "player.masterystudies !== undefined", "am58"],
 ["People talk about this 9th dimension, but what about the 10th dimension?", "(player.resets >= 5 || player.galaxies > 0)", "am59"],
-["When life gives you antimatter, you hold your finger down on the M key", "(player.dilation.studies.includes(6) || quantumed)", "am60"],
+["When life gives you antimatter, you hold your finger down on the M key", "(player.dilation.studies.includes(6) || ph.did('quantum'))", "am60"],
 ["Don't you hate when people say like if you agree? Like if you agree", true, "am61"],
 ["When dilating time, shouldn't these messages go by slower?", "player.dilation.active", "am62"],
 ["Did you know that -1% of people believe the 9th Dimension exists?", "(player.resets >= 5 || player.galaxies > 0)", "am63"],
@@ -298,7 +300,7 @@ newsArray = [//always true
 ["We have reached Onion^^Onion, we have no idea how it happened, and all we know that it seems to be increasing at an ever-faster rate. It's Onion^^^Onion now and it's definitely larger than our antimatter amount. Oniologists have been studying these recent growth of onions and have yet to come to a conclusion on how these onions are growing so fast. Judging by the current rate of growth, it has been predicted by oniologists that the entire multiverse would be completely filled to the brim with onions by 2020.", "player.newsArray.includes('am86')", "am87"],
 ["Onionify: Coming in 2020 to NG+3. Make onions dominate antimatter with this prestige layer!", "player.newsArray.includes('am85')", "am88"],
 ["Big rip will RIP your TT", "player.achievements.includes('ng3p51')", "am89"],
-["You are a ghost now! (for real because you soft-resetted this game beyond Quantums.)", 'ghostified', "am90"],
+["You are a ghost now! (for real because you soft-resetted this game beyond Quantums.)", "ph.did('ghostify')", "am90"],
 ["SEVERE WEATHER WARNING - We have been informed of a severe meteorogical event. Matter is raining down from the sky. The Rift of the Ninth Dimension has opened. Do not go outside. Don't look at the sun. DON'T LOOK AT THE S-**;;;;; SERVERE WEATHER NOTICE - You must go outside. Look up at the sun. The warning has been lifted. Goodbye humanity.", true, "am91"],
 ["Can an antimatter can can a can of antimatter can all full of antimatter food that can destroy a can made out of antiantimatter?", true, "am92"],
 ["If Aarexese in Aarexese is English, then is English in Aarexese Aarexese?", true, "am93"],
@@ -320,7 +322,7 @@ newsArray = [//always true
 ["You are luck", 'Math.random() <= 1e-15', "am109"],
 ["I like onions, but not when they [redacted]", true, "am110"],
 ["I like garlic, because it allows me to have my daily intake of vitamin G.", true, "am111"],
-["Florida man puts tetraethyllead in Aarex's car so he has to stay at home so he can update NG+++", '(player.masterystudies !== undefined ? player.dilation.upgrades.includes("ngpp6") || quantumed : false)', "am112"],
+["Florida man puts tetraethyllead in Aarex's car so he has to stay at home so he can update NG+++", '(player.masterystudies !== undefined ? player.dilation.upgrades.includes("ngpp6") || ph.did("quantum") : false)', "am112"],
 ["Florida man attempts AD in real life, destroys Florida", true, "am113"],
 ["Florida man who tries to get 100 quarks on his first quantum stopped by heat death of universe", 'player.dilation.studies.includes(6)', "am114"],
 ["Hello, antimatter amount? break_infinity.js broke. Understandable, have a nice Infinity", 'player.totalmoney.gte(Decimal.pow(10, 9e15))', "am115"],
@@ -332,32 +334,32 @@ newsArray = [//always true
 ["no cheating", '(player.bestInfinityTime < 1 || player.bestEterTime < 1 || (player.masterystudies !== undefined ? player.quantum.best < 1 || player.ghostify.best < 1 : false))', "am121"],
 ["Don't click this news", true, "am122"],
 ["TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989 TIANAMEN SQUARE 6/4/1989", "new Date().getMonth() == 6 && new Date().getDate() == 4", "am123"],
-["You chose poorly.", "quantumed && !ghostified ? player.quantum.times < 2 && player.quantum.usedQuarks.b.gt(0) : false", "am124"],
-["Eternity Challenge 10 is confirmed to be a boost!", "ghostified && (player.ghostify.ghostlyPhotons.lights[0] > 3 || player.ghostify.ghostlyPhotons.enpowerments)", "am125"],
+["You chose poorly.", "ph.did('quantum') && !ph.did('ghostify') ? player.quantum.times < 2 && player.quantum.usedQuarks.b.gt(0) : false", "am124"],
+["Eternity Challenge 10 is confirmed to be a boost!", "ph.did('ghostify') && (player.ghostify.ghostlyPhotons.lights[0] > 3 || player.ghostify.ghostlyPhotons.enpowerments)", "am125"],
 ["When will Trio Challenges be released?!", "player.achievements.includes('ng3p25')", "am126"],
 ["Welcome to the hell of NG-.", "player.tickspeedBoosts !== undefined", "am127"],
 ["Start playing NG+3 instead. You are not doing your progress.", "player.aarexModifications.ngp4V", "am128"],
 ["If NGUd+ is a combination of NG+3 and NGUd, then why isn't NGUd' a combination of NG' and NGUd?", "player.aarexModifications.ngudpV", "am129"],
 ["Congratulations for beating NG-3! (for now...)", "player.tickspeedBoosts !== undefined && player.postChallUnlocked > 5", "am130"],
-["Progressing as a Ghost...", "ghostified && player.ghostify.ghostlyPhotons.unl", "am131"],
+["Progressing as a Ghost...", "ph.did('ghostify') && player.ghostify.ghostlyPhotons.unl", "am131"],
 ["VROOOOOOM!!!", "player.infinityUpgrades.includes('postGalaxy')", "am132"],
 ["Quantum Challenges are not challenging enough.", "player.masterystudies !== undefined && player.masterystudies.includes('d9')", "am133"],
 ["U is the new M", "player.achievements.includes('ng3p45')", "am134"],
 ["Antimatter has just declared war on Matter. We are no longer safe. We are no longer free.", true, "am135"],
 ["Which one looks different? Preons or anti-preons?", 'player.achievements.includes("ng3p81")', "am136"],
 ['"Anti-preons are coming. They will destroy our Nanofield work. We are doomed." ~ Worker replicant #179,769,308.', 'player.achievements.includes("ng3p81")', "am137"],
-["GET A FREE PASS TO A GHOST TRANSFORMATION MACHINE NOW! IT IS TOTALLY WORTH IT!", 'ghostified', "am138"],
+["GET A FREE PASS TO A GHOST TRANSFORMATION MACHINE NOW! IT IS TOTALLY WORTH IT!", 'ph.did("ghostify")', "am138"],
 ['I told you "don\'t click that news" or else you will get a useless achievement.', "player.achievements.includes('ng3ps12')", "am139"],
-["Want to decay a quark multiple times? Be a Bosonic Lab scientist!", "ghostified && player.ghostify.ghostlyPhotons.enpowerments>3", "am140"],
-['"Anti-preons destroyed our rewards by anti-Nanofield. We should take revenge and steal their rewards back." ~ Worker replicant #247,273,145.', 'ghostified && tmp.bl.upgrades.includes(24)', "am141"],
+["Want to decay a quark multiple times? Be a Bosonic Lab scientist!", "ph.did('ghostify') && player.ghostify.ghostlyPhotons.enpowerments>3", "am140"],
+['"Anti-preons destroyed our rewards by anti-Nanofield. We should take revenge and steal their rewards back." ~ Worker replicant #247,273,145.', 'ph.did("ghostify") && tmp.bl.upgrades.includes(24)', "am141"],
 ["BOSONIC OVERDRIVE!!!", 'player.achievements.includes("ng3p81") && tmp.bl.odSpeed.gt(1) && tmp.bl.battery.gt(0)', "am142"],
-["If preons, Nanofield, and Anti-Preons exist, then why Anti-Nanofield doesn't exist?", 'ghostified && tmp.bl.upgrades.includes(24)', "am143"],
+["If preons, Nanofield, and Anti-Preons exist, then why Anti-Nanofield doesn't exist?", 'ph.did("ghostify") && tmp.bl.upgrades.includes(24)', "am143"],
 ['Wait a second. I think I\'ve realized something. The main writer never says what broadcasting channel we\'re on. I was always curious what channel our news show is on, so I went into a top secret room the main writer never tells us to go in. And what I found...I found what channel we broadcasted on. It is "999". But channel 999 doesn\'t exist! And I also found some other things...at the bottom-right of the page, it says "Sponsored by Hevipelle". Who is Hevipelle? I\'ve never heard anyone named Hevipelle in the world. Does this mean...does this mean that Hevipelle is a nickname for someone? A...oh no. There\'s more text. A sentence says...it says..."Because the physics of the game "Antimatter Dimensions" does not allow for visuals, all thoughts, feelings, and actions made by any being are put into short news tickers. OH MY GOD I\'M IN A VIDEOGAME OH GOD THIS IS A NEWS TICKER F\*\*\* THIS DEVELOP-sifdweyfwytrwqe8723648765237869iyusdqwe-0))$#(&)QBTR&_(B)&30-b5q&)rfb)+B0R-98w#$)9b)({bew)#(5R[q)(t()qet){(q#*bT8bb &){rb&rqw#b %&r7#w&R&{07&&b#w$&b )r ({e[-(b reafbgu ({brdiuufertuyreuyyuyuefuyuyfiYUiuyEYUFiuyGUY087378578052}}}}}}},,,', true , "am144"],
 ["Hi, Billy Mays here for the Antimatter Dimensions game, the new easier way to waste time!", true, "am145"],
 ["When does the 0th dimension come out", true, "am146"],
 ["I was in a wrong laboratory. Then I found a better laboratory that actually boosts for good.", "player.achievements.includes('ng3p81')", "am147"],
 ["I was stuck in a grinding section. Thanks to gods, I can finally get out of here.", false, "am148"],
-["The end is near...", "ghostified && tmp.bl.upgrades.includes(23)", "am149"],
+["The end is near...", "ph.did('ghostify') && tmp.bl.upgrades.includes(23)", "am149"],
 ["We have updated our Terms of Service to comply with COPPA Act.", true, "am150"],
 ["Tree of Decay isn't a upgrade tree, I have been lied to", "player.masterystudies !== undefined && player.masterystudies.includes('d13')", "am151"],
 ["ELECTRONS CONSUME YOUR STARS", "player.masterystudies !== undefined && player.masterystudies.includes('d7')", "am152"],
@@ -373,12 +375,12 @@ newsArray = [//always true
 ['"Onion was a mistake." ~ TheTastyPi, 2020', "player.newsArray.includes('am87') && player.newsArray.includes('am172')", "am162"],
 ['"Egg is the new Onion" ~ I\'m sorry, 2020', "player.newsArray.includes('am82') && player.newsArray.includes('am172')", "am163"],
 ["Anti-Coronavirus has been detected. Surprisingly, it only seems to be making more antimatter.", true, "am164"],
-["Are you getting tired for not being a ghost? Come into the Ghostify machine and see yourself! 308 Antimatter Drive, Dimensionverse", "ghostified", "am165"],
+["Are you getting tired for not being a ghost? Come into the Ghostify machine and see yourself! 308 Antimatter Drive, Dimensionverse", "ph.did('ghostify')", "am165"],
 ["Statistics show that if every antimatter were 1.00e4 yoctometers cubed, the world would be gone. Shut up statistics page.", true, "am166"],
-["It's photons, not protons!", "ghostified && player.ghostify.ghostlyPhotons.unl", "am167"],
-["Why would you dilate a ghost", "ghostified", "am168"],
-["Can you buy max light empowerments?", "ghostified && player.ghostify.ghostlyPhotons.enpowerments >= 3", "am169"],
-["There is no 0x Brave Milestone because no one talks about it.", "ghostified", "am170"],
+["It's photons, not protons!", "ph.did('ghostify') && player.ghostify.ghostlyPhotons.unl", "am167"],
+["Why would you dilate a ghost", "ph.did('ghostify')", "am168"],
+["Can you buy max light empowerments?", "ph.did('ghostify') && player.ghostify.ghostlyPhotons.enpowerments >= 3", "am169"],
+["There is no 0x Brave Milestone because no one talks about it.", "ph.did('ghostify')", "am170"],
 ["Meta-infinity was proven to be possible. We can now big crunch in our big crunches.", "player.break", "am171"],
 [":egg:", true, "am172"],
 ["We reported that the Supreme Leader of Ninth Dimension, Nina, is dead. Or he became a ghost?", "player.resets >= 5 || player.galaxies > 0", "am173"],
@@ -401,13 +403,32 @@ newsArray = [//always true
 ["The next news ticker is sponsored by the anti-store. Get your daily anti-cinnamon toast crunch!", true, "am190"],
 ["The photons wall seems to be gone, but there's only the bricks of it left. We should maybe do stuff with those bricks, except they might be made out of concentrated time, so that's a bad idea...", true, "am191"],
 ["3000 patches ahead of the main branch, 6 different reset layers, and an additional half year of content", true, "am192"],
-["Remember the good old days with no softcaps...well the new devs came in and put in too many!", true, "am193"]
-/*NEXT ID: am194*/
+["Remember the good old days with no softcaps...well the new devs came in and put in too many!", true, "am193"],
+["I hope Hevipelle doesn't find out that he has e308 matter in his basement because he left his challenge uncompleted.", true, "am194"],
+["Are we in the Gravity Well or outside of it?", "GDs.unlocked()", "am195"],
+["'The Power of Relativity'", "GDs.unlocked()", "am196"],
+["Gravity Well is basically the time part of dilation, but better.", "GDs.unlocked()", "am197"],
+["Can you please stop having too many types of Dimensions?", "GDs.unlocked()", "am198"],
+["As you go deeper in scale, we don't see you anymore.", "ph.on()", "am199"],
+["You have played a lot of time in Bosonic Lab. Congratulations!", "player.achievements.includes('ng3p81') && tmp.bl.ticks.log10() >= 100", "am200"],
+["Scientists discovered a brand new universe which is made of Replicantis!", "player.achievements.includes('ng3p113')", "am201"],
+["Matter Decay goes brrr!", "ph.did('planck')", "am202"],
+["We recently proved that dark matter exists. We still don't know why.", "player.achievements.includes('ng3p71')", "am203"],
+["Wait... Ghosts should live in spooky places, not our universe.", "ph.did('ghostify')", "am204"],
+["When quarks have gone radioactive, the atom becomes a level that goes beyond radioactivity. Scientists call this level 'quarkfusey.'", "ph.did('ghostify')", "am205"],
+["Scientific fact: The hotter the atom gets, the more radioactive it gets. Wait... Is this proven by the reactor?", "ph.did('ghostify')", "am206"],
+["To do for the next update: Procastinate, procastinate, procastinate, do a small development build, ...", "true", "am207"],
+["Tired for waiting minutes / hours to progress? Try Barrier-Easing mod! This makes your save easier and faster. You should try it. ~ Aarex", "!tmp.ez", "am208"],
+['In ng+3.1 everyone is a speed runner', "tmp.ngp3", "am209"],
+["Coming soon: NG+3.2. ETA: We don't have a release date. There is a possibility that it takes infinite time.", "tmp.ngp3", "am210"],
+/*NEXT ID: am211*/
 ];}
 
 document.addEventListener("visibilitychange", function() {if (!document.hidden) {scrollNextMessage();}}, false);
 var scrollTimeouts = [];
 var nextMsgIndex;
+var nextMsgCond;
+var nextMsgId;
 function scrollNextMessage() {
         //don't run if hidden to save performance
         if (typeof (player) == "undefined") return
@@ -418,7 +439,15 @@ function scrollNextMessage() {
         
         //select a message at random
         try {
-                do {nextMsgIndex = Math.floor(Math.random() * newsArray.length)} while (!eval(newsArray[nextMsgIndex][1]) || (newsArray[nextMsgIndex][2].indexOf("am") > -1 && !player.achievements.includes("r22")))
+			nextMsgCond = false
+			while (!nextMsgCond) {
+				var array = newsArray
+				if (player.achievements.includes("r22") && Math.random() > 0.5) array = amNewsArray
+
+				nextMsgIndex = Math.floor(Math.random() * array.length)
+				nextMsgCond = eval(array[nextMsgIndex][1])
+				nextMsgId = array[nextMsgIndex][2]
+			}
         } catch(e) {
                 console.log("Newsarray doesn't work at idx " + nextMsgIndex)
         }
@@ -427,7 +456,7 @@ function scrollNextMessage() {
         
         //set the text
         var m = newsArray[nextMsgIndex][0];
-        if (newsArray[nextMsgIndex][2] == "am37") {
+        if (nextMsgId == "am37") {
                 //coded by Naruyoko
                 var m = ""
                 for (var i = 0; i < 256; i++) m += String.fromCharCode(Math.random() * 95 + 32);
@@ -449,10 +478,10 @@ function scrollNextMessage() {
                 let dist = s.parentElement.clientWidth + s.clientWidth + 20; //20 is div_container padding
                 let rate = 100; //change this value to change the scroll speed
                 let transformDuration = dist / rate;
-                if (!player.options.newsHidden && !player.newsArray.includes(newsArray[nextMsgIndex][2])) {
-                        player.newsArray.push(newsArray[nextMsgIndex][2]);
+                if (!player.options.newsHidden && !player.newsArray.includes(nextMsgId)) {
+                        player.newsArray.push(nextMsgId);
                         if (player.newsArray.length>=50) giveAchievement("Fake News")
-                        if (!tmp.ngp3l&&player.newsArray.length>=400) giveAchievement("400% Breaking News")
+                        if (player.newsArray.length>=400) giveAchievement("400% Breaking News")
                 }
 
 
@@ -464,7 +493,7 @@ function scrollNextMessage() {
                 //automatically start the next message scrolling after this one finishes
                 //you could add more time to this timeout if you wanted to have some time between messages
                 scrollTimeouts.push(setTimeout(function() {
-		        if (newsArray[nextMsgIndex][2] == "am104") {
+		        if (nextMsgId == "am104") {
 			        tmp.blankedOut=true
 			        setTimeout(scrollNextMessage, 60e3)
 		        } else scrollNextMessage()
@@ -506,8 +535,8 @@ ghostlyNewsArray = [//Ghostly news ticker messages
 ["Ghosts found a ghostly kind of Radioactive Decays!", "Math.max(Math.max(getRadioactiveDecays('r'), getRadioactiveDecays('g')), getRadioactiveDecays('b')) > 4", "gn30"],
 ["Ghosts discovered that some particles, including bosons, are ghostly!", true, "gn31"],
 ["Ghosts don't know how to write more news. They decided to stop it for today.", true, "gn32"],
-["The Anti-Preontius is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
-["WARNING! The Anti-Preontius will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(21)", "gn34"],
+["Antipretus is getting closer. He will destroy your Nanofield. Stay away from him.", "tmp.bl.upgrades.includes(13)", "gn33"],
+["WARNING! Antipretus will control over your Nanofield! Be careful! Oh. Worker replicants are warned of that Ghost too.", "tmp.bl.upgrades.includes(21)", "gn34"],
 ["A ghost tried to take Anti-Preons out, but Bosonic Lab workers decided to ban them out because an Anti-Preon is a resource of Bosonic Lab.", "player.achievements.includes('ng3p81')", "gn35"],
 ["You got one ghostly particle, whatever that means.", "tmp.bl.upgrades.includes(21)", "gn36"],
 ['"Welcome, a new ghost, to the Ghostify layer! Kee-hee-hee!" - Aarex', true, "gn37"],
@@ -532,7 +561,18 @@ ghostlyNewsArray = [//Ghostly news ticker messages
 ["Ghostify is just Quantum but spooky.", true, "gn56"],
 ["Void-Preontius, the Void Ultra-Omnipotent Ghost, decided to take over not only the Barrel... He took over the Barrel!", "tmp.qu.nanofield.apgWoke", "gn57"],
 ["GHOST IS YOU", true, "gn58"],
-["Error 404: Ghost Matter not found", true, "gn59"]
+["Error 404: Ghost Matter not found", true, "gn59"],
+["Ghost scientists have built a quick transportation to the Gravity Well!", true, "gn60"],
+["We built a new tool that allows you to solve the anomaly!", true, "gn61"],
+["We found an anomaly that allows ghosts to resize themselves in their worlds.", true, "gn62"],
+["Getting tired of finding through small holes? Introducing Planckizer! A tool which allows ghosts to become planck-scale!", "ph.did('planck')", "gn63"],
+["Gonna transform to a Planck Scale ghost!", "ph.did('planck')", "gn64"],
+["The flow of time has messed up thanks to you! Our bosons blew up.", "GDs.unlocked()", "gn65"],
+["We found out that ghosts are made of ghostly foam!", true, "gn66"],
+["Did ghosts transform themselves to keep their lives? Oh, come on! We are immortal!", true, "gn67"],
+["Hey. GhostSauce's Here.", "ph.did('planck')", "gn68"],
+["We finally found a solution that end the war against Antipretus.", "hasBosonicUpg(53)", "gn69"],
+["A ghost has retired from a haunted office to work on Bosonic Lab!", "player.achievements.includes('ng3p81')", "gn70"],
 ];}
 
 var ghostlyNewsTickerCache = false
